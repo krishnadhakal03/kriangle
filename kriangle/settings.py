@@ -150,8 +150,7 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True  # Make sure session cookies are secure as well
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://kriamgle.com',
-    '107.22.92.189',   
+    'https://kriangle.com',      
 ]
 
 # If you're running locally and encountering this issue, set this to False temporarily
