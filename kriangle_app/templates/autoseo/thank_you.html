@@ -1,0 +1,11 @@
+<!-- thank_you.html -->
+{% extends 'autoseo/base.html' %}
+{% block title %}Thank You{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Thank you for reaching out!</h1>
+        <p>We have received your message and will get back to you shortly.</p>
+        <a href="{% url 'contact' %}">Go back to contact page</a>
+    </div>
+{% endblock %}

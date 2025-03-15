@@ -1,0 +1,13 @@
+{% extends 'autoseo/base.html' %}
+{% block title %}SEO Results{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>SEO Automation Results</h1>
+    <ul>
+        {% for result in results %}
+            <li>{{ result.step }}: <a href="{{ result.result_data }}" target="_blank">{{ result.result_data }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

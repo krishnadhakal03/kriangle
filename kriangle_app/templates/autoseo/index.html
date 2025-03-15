@@ -1,0 +1,562 @@
+{% extends 'autoseo/base.html' %}
+
+{% load static %}
+
+{% block title %} 
+Home 
+{% endblock %}
+
+{% block content %}
+
+  <!-- banner section start --> 
+  <div class="banner_section layout_padding">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <h1 class="banner_taital">Scan website for SEO & <span style="color: #2b2b2b;">Security</span></h1>
+            <p class="banner_text">Try our free AI scanner and analysis report later you can choose plan for SEO package, website building and IT support. </p>
+            <div class="started_text"><a href="{% url 'services' %}">Read More</a></div>
+            <div class="play_icon"><a href="{% url 'services' %}"><img src="{% static 'images/play-icon.png' %}"></a> </div>
+         </div>
+         <div class="col-md-6">
+            <div id="banner_slider" class="carousel slide" data-ride="carousel">
+               <div class="carousel-inner">
+                  <div class="carousel-item active">
+                     <div class="banner_img"><img src="{% static 'images/SEO Services.png' %}"></div>
+                  </div>
+                  <div class="carousel-item">
+                     <div class="banner_img"><img src="{% static 'images/Python Application.png' %}"></div>
+                  </div>
+                  <div class="carousel-item">
+                     <div class="banner_img"><img src="{% static 'images/Website Development.png' %}"></div>
+                  </div>
+               </div>
+               <a class="carousel-control-prev" href="#banner_slider" role="button" data-slide="prev">
+               <i class="fa fa-angle-left"></i>
+               </a>
+               <a class="carousel-control-next" href="#banner_slider" role="button" data-slide="next">
+               <i class="fa fa-angle-right"></i>
+               </a>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- banner section end -->
+</div>
+<!-- header section end -->
+<!-- select box section start -->
+<div class="container">
+   <div class="select_box_section">
+       <form id="seo_form" method="post">
+           {% csrf_token %}
+           <div class="select_box_main">
+               <div class="row">
+                   <div class="col-md-6 select-outline">
+                       <input type="url" class="form-control" 
+                              placeholder="Enter Website URL" 
+                              name="website_url" required>
+                   </div>
+                   <div class="col-md-6 select-outline">
+                       <input type="text" class="form-control" 
+                              placeholder="Enter Keywords" 
+                              name="keywords">
+                   </div>
+               </div>
+           </div>
+           <div class="text-center mt-4">
+               <button type="submit" id="scan_now" class="btn btn-primary btn-lg">
+                   <i class="fas fa-search"></i> Scan Now
+               </button>
+           </div>
+       </form>
+   </div>
+</div>   
+<!-- Analysis Report -->
+<div class="container">
+<div id="analysis_report" class="mt-5" style="display: none;">
+   <h3 class="mb-4"><i class="fas fa-file-alt"></i> SEO Analysis Report</h3>
+   
+   <!-- Report content will be populated here -->
+   <div id="report_content"></div>
+</div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.report-card {
+   border: 1px solid #dee2e6;
+   border-radius: 8px;
+   padding: 20px;
+   margin-bottom: 20px;
+   background: #fff;
+}
+.report-card h5 {
+   color: #2c3e50;
+   border-bottom: 2px solid #eee;
+   padding-bottom: 10px;
+}
+.metric-item {
+   margin: 10px 0;
+}
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $(document).ready(function() {
+       // CSRF Token function
+       function getCookie(name) {
+           let cookieValue = null;
+           if (document.cookie && document.cookie !== '') {
+               const cookies = document.cookie.split(';');
+               for (let i = 0; i < cookies.length; i++) {
+                   const cookie = cookies[i].trim();
+                   if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                       cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                       break;
+                   }
+               }
+           }
+           return cookieValue;
+       }
+   
+       // Form submission handler
+       $('#seo_form').submit(function(event) {
+           event.preventDefault();
+           const $btn = $('#scan_now');
+           
+           // Get input values
+           const website_url = $('input[name="website_url"]').val();
+           const keywords = $('input[name="keywords"]').val();
+   
+           // Validate URL
+           if (!website_url) {
+               alert('Please enter a website URL!');
+               return;
+           }
+   
+           $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Scanning...');
+   
+           // AJAX request
+           $.ajax({
+               url: '/scan_seo/',
+               type: 'POST',
+               headers: {
+                   'X-CSRFToken': getCookie('csrftoken')
+               },
+               data: {
+                   'website_url': website_url,
+                   'keywords': keywords
+               },
+               success: function(response) {
+                   if (response.error) {
+                       alert('Error: ' + response.error);
+                       return;
+                   }
+                   
+                   // Ensure response has report data
+                   if (response.report) {
+                       const report = response.report;
+                       let reportHtml = `
+                           <div class="report-card">
+                               <h5><i class="fas fa-info-circle"></i> Basic Information</h5>
+                               <div class="metric-item">
+                                   <strong>Title Tag:</strong> ${report.title_tag || 'Not Found'}
+                               </div>
+                               <div class="metric-item">
+                                   <strong>Scanned URL:</strong> ${website_url}
+                               </div>
+                           </div>
+   
+                           <div class="report-card">
+                               <h5><i class="fas fa-key"></i> Keyword Analysis</h5>
+                               <div class="metric-item">
+                                   <strong>Keyword Count:</strong> ${report.keyword_count || 0}
+                               </div>
+                               <div class="metric-item">
+                                   <strong>Density:</strong> ${report.keyword_analysis?.keyword_density || 0}%
+                               </div>
+                           </div>
+   
+                           <div class="report-card">
+                               <h5><i class="fas fa-search"></i> SEO Suggestions</h5>
+                               ${report.on_page_seo_suggestions?.length ? 
+                                   '<ul>' + report.on_page_seo_suggestions.map(s => 
+                                       `<li><i class="fas fa-exclamation-triangle text-warning me-2"></i>${s}</li>`
+                                   ).join('') + '</ul>' : 
+                                   '<div class="text-success">No major issues found!</div>'}
+                           </div>
+   
+                           <div class="report-card">
+                               <h5><i class="fas fa-chart-bar"></i> Technical Metrics</h5>
+                               <div class="metric-item">
+                                   <strong>Images:</strong> ${report.other_seo_metrics?.num_images || 0}
+                               </div>
+                               <div class="metric-item">
+                                   <strong>Links:</strong> ${report.other_seo_metrics?.num_links || 0}
+                               </div>
+                               <div class="metric-item">
+                                   <strong>Scripts:</strong> ${report.other_seo_metrics?.num_scripts || 0}
+                               </div>
+                               <div class="metric-item">
+                                   <strong>h1 tag:</strong> ${report.other_seo_metrics?.num_h1 || 0}
+                               </div>
+                               <div class="metric-item">
+                                   <strong>h2 tag:</strong> ${report.other_seo_metrics?.num_h2 || 0}
+                               </div>
+                               <div class="metric-item">
+                                   <strong>h3 tag:</strong> ${report.other_seo_metrics?.num_h3 || 0}
+                               </div>
+                               <div class="metric-item">
+                                   <strong>Canonical tag:</strong> ${report.other_seo_metrics?.canonical_tag || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>Page speed:</strong> ${report.other_seo_metrics?.page_speed || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>Internal Links:</strong> ${report.other_seo_metrics?.internal_links || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>External Links:</strong> ${report.other_seo_metrics?.external_links || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>Structured Data:</strong> ${report.other_seo_metrics?.structured_data || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>Mobile Friendly:</strong> ${report.other_seo_metrics?.mobile_friendly || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>Social Media Tags:</strong> ${report.other_seo_metrics?.social_media_tags || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>noindex tag:</strong> ${report.other_seo_metrics?.noindex_tag || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>XML sitemap:</strong> ${report.other_seo_metrics?.xml_sitemap || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>Robots.txt:</strong> ${report.other_seo_metrics?.robots_txt || 0}
+                               </div>
+                                <div class="metric-item">
+                                   <strong>Text to html ratio:</strong> ${report.other_seo_metrics?.text_to_html_ratio || 0}
+                               </div>
+                           </div>
+                       `;
+   
+                       $('#report_content').html(reportHtml);
+                       $('#analysis_report').show();
+                   } else {
+                       alert('Invalid server response format');
+                   }
+               },
+               error: function(xhr) {
+                   let errorMsg = 'Request Failed: ';
+                   if (xhr.responseJSON && xhr.responseJSON.error) {
+                       errorMsg += xhr.responseJSON.error;
+                   } else {
+                       errorMsg += `${xhr.statusText} (${xhr.status})`;
+                   }
+                   alert(errorMsg);
+               },
+               complete: function() {
+                   $btn.prop('disabled', flase).html('<i class="fas fa-search"></i> Scan Now');
+               }
+           });
+       });
+   });
+   </script>
+
+<!-- services section start -->
+<div class="services_section layout_padding">
+   <div class="container">
+      <div class="row">
+         <div class="col-sm-12">
+            <h1 class="customer_taital">Services</h1>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-4">
+            <h4 class="services_taital">SEO Optimization</h4>
+            <p class="services_text">
+               At Kriangle, we know that a well-optimized website is key to success in the digital world. Our SEO services are not just about improving rankings; they’re about building a strong, sustainable online presence. With hands-on experience optimizing five websites, we focus on:
+               <ul>
+                  <li>On-page and Off-page SEO strategies</li>
+                  <li>Keyword research and competitive analysis</li>
+                  <li>Technical SEO (site speed, mobile optimization, schema markup)</li>
+                  <li>Content strategy and backlink building</li>
+                  <li>SEO audits and ongoing reporting</li>
+               </ul>
+               By analyzing your website’s structure and content, we’ll ensure it is search-engine-friendly and performs at its best.
+            </p>            
+         </div>
+         <div class="col-md-4">
+            <h1 class="services_taital">Full-Stack Python Django Development</h1>
+            <p class="services_text">
+               Whether you need a custom-built web application or a powerful e-commerce platform, we specialize in Python Django for full-stack development. Django is known for its speed, security, and scalability, making it perfect for web applications of all sizes. Our capabilities include:
+               <ul>
+                  <li>Back-end development using Python Django for robust, secure applications</li>
+                  <li>Front-end development with HTML, CSS, JavaScript, and popular frameworks like React.js</li>
+                  <li>Database management using PostgreSQL or MySQL</li>
+                  <li>API development and integration with third-party services</li>
+                  <li>Custom admin dashboards for ease of use and content management</li>
+               </ul>
+               With our Django expertise, we deliver web applications that are scalable, secure, and easy to maintain, with an emphasis on clean, efficient code.
+            </p>
+            
+         </div>
+         <div class="col-md-4">
+            <h1 class="services_taital">Cloud Hosting Solutions (Azure & AWS)</h1>
+            <p class="services_text">
+               Hosting your website on a reliable cloud platform is critical for its performance and security. At Kriangle, we offer cloud hosting solutions using Azure and AWS—two of the most powerful and secure cloud platforms in the world.
+               <ul>
+                  <li>Cloud deployment on Azure or AWS to ensure your application is scalable, secure, and optimized</li>
+                  <li>CI/CD pipelines to automate deployments and ensure continuous delivery</li>
+                  <li>Cloud database management with Azure SQL Database or AWS RDS for high availability and performance</li>
+                  <li>Cloud security practices, including encryption, firewalls, and access management</li>
+               </ul>
+               Whether you’re hosting a simple website or a complex application, we’ll help you leverage the power of cloud computing to achieve optimal performance and scalability.
+            </p>
+            
+         </div>
+      </div>
+
+      <div class="row">
+         <div class="col-md-4">
+            <h1 class="services_taital">WordPress Management</h1>
+            <p class="services_text">
+               Managing WordPress websites requires both technical and creative expertise. At Kriangle, we have experience managing and maintaining WordPress for two websites—ensuring everything runs smoothly and securely.
+               <ul>
+                  <li>Theme customization and plugin integration</li>
+                  <li>Performance optimization and caching strategies</li>
+                  <li>Security updates and regular backups</li>
+                  <li>SEO optimization for WordPress to improve visibility</li>
+               </ul>
+               We ensure that your WordPress website stays up-to-date, secure, and optimized for both performance and SEO.
+            </p>
+            
+         </div>
+         <div class="col-md-4">
+            <h1 class="services_taital">API Integration</h1>
+            <p class="services_text">
+               Integrating third-party APIs is essential for businesses that need to connect their systems with external services. At Kriangle, we have expertise in integrating APIs across various domains, including healthcare.
+               <ul>
+                  <li>Custom API integration with payment gateways, CRMs, marketing platforms, and more</li>
+                  <li>Secure API connections with proper authentication methods (OAuth, API Keys)</li>
+                  <li>Integration with US health insurance systems, ensuring compliance and security</li>
+               </ul>
+               Whether you’re integrating payment solutions, customer management systems, or healthcare services, we can help build the connections that power your business.
+            </p>
+            
+         </div>
+         <div class="col-md-4">
+            <h1 class="services_taital">Agile Project Management (Scrum Master Experience)</h1>
+            <p class="services_text">
+               With experience as a Scrum Master, our founder ensures that all projects are delivered on time and within scope. We follow agile practices to ensure flexibility and rapid iteration:
+               <ul>
+                  <li>Scrum-based approach for project planning, sprints, and delivery</li>
+                  <li>Regular standups, retrospectives, and reviews for continuous improvement</li>
+                  <li>Focus on collaboration with stakeholders and team members</li>
+               </ul>
+               Whether you’re launching a new project or need a well-defined path to complete an existing one, we can help guide your team to success using agile methodologies.
+            </p>
+            
+         </div>
+      </div>
+   </div>
+</div>
+<!-- services section end -->
+<!-- about section start -->
+<div class="about_section layout_padding">
+<div class="container-fluid">
+ 
+</div>
+</div>
+<!-- about section end -->
+<!-- pricing section start -->
+<div class="pricing_section layout_padding">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12">
+            <h1 class="pricing_taital">Find a Price</h1>
+         </div>
+      </div>
+      <div class="pricing_section_2">
+         <div class="row">
+            <div class="col-md-4">
+               <div class="pricing_box">
+                  <h6 class="regular_text">SEO</h6>
+                  <div class="taital_main">
+                     <h3 class="dolor_text">$</h3>
+                     <h1 class="dolor_text_1">200</h1>
+                     <p class="month_text">/Per Month</p>
+                  </div>
+                  <p class="using_text">SEO for 5 keywords is $200. Additional keywords and customizations are priced accordingly.</p>
+                  <div class="readmore_bt"></div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="pricing_box active">
+                  <h6 class="regular_text">Website</h6>
+                  <div class="taital_main">
+                     <h3 class="dolor_text">$</h3>
+                     <h1 class="dolor_text_1">500</h1>
+                     <p class="month_text">With 6 pages</p>
+                  </div>
+                  <p class="using_text">Standard 6-page CMS website. Additional pages priced accordingly.</p>
+                  <div class="readmore_bt active"></div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="pricing_box">
+                  <h6 class="regular_text">IT support</h6>
+                  <div class="taital_main">
+                     <h3 class="dolor_text">$</h3>
+                     <h1 class="dolor_text_1">30</h1>
+                     <p class="month_text">/Per Hour</p>
+                  </div>
+                  <p class="using_text">Services include Scrum Master, Coding, Deployment, and QC.</p>
+                  <div class="readmore_bt"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- pricing section end -->
+<!-- customer section end -->
+<div class="customer_section layout_padding">
+<div class="container">
+   <div class="row">
+      <div class="col-sm-12">
+         <h1 class="customer_taital">Our customer's Feedback</h1>
+      </div>
+   </div>
+</div>
+<div id="my_slider" class="carousel slide" data-ride="carousel">
+   <div class="carousel-inner">
+      <div class="carousel-item active">
+         <div class="customer_section_2">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="box_main">
+                        <div class="customer_main">
+                           <p class="enim_text">Next Generation Wealth Pro </p>
+                           <div class="customer_left">
+                              <div class="customer_img"><img src="{% static 'images/customer-img.png' %}"></div>
+                           </div>
+                           <div class="customer_right">
+                              <h3 class="customer_name">Doba Dhakal</h3>
+                              <p class="web_text">Satisfied </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="carousel-item">
+         <div class="customer_section_2">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="box_main">
+                        <div class="customer_main">
+                           <p class="enim_text">kasthamandap Restaurant and Bar </p>
+                           <div class="customer_left">
+                              <div class="customer_img"><img src="{% static 'images/customer-img.png' %}"></div>
+                           </div>
+                           <div class="customer_right">
+                              <h3 class="customer_name">Renji Sherpa</h3>
+                              <p class="web_text">Happy that I gave to Kriangle </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="carousel-item">
+         <div class="customer_section_2">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="box_main">
+                        <div class="customer_main">
+                           <p class="enim_text">has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors </p>
+                           <div class="customer_left">
+                              <div class="customer_img"><img src="{% static 'images/customer-img.png' %}"></div>
+                           </div>
+                           <div class="customer_right">
+                              <h3 class="customer_name">Content</h3>
+                              <p class="web_text">And web page </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="prev">
+   <i class="fa fa-angle-left"></i>
+   </a>
+   <a class="carousel-control-next" href="#my_slider" role="button" data-slide="next">
+   <i class="fa fa-angle-right"></i>
+   </a>
+</div>
+</div>
+<!-- customer section end -->
+<!-- contact section start -->
+<div class="contact_section layout_padding">
+   <div class="container">
+       <div class="row">
+           <div class="col-sm-12">
+               <h1 class="contact_taital contact_heading">Contact Us</h1>
+           </div>
+       </div>
+       <div class="contact_section_2">
+           <div class="row">
+               <div class="col-md-12">
+                   <div class="mail_section map_form_container">
+                      <form method="POST" action="{% url 'contact' %}">
+                         {% csrf_token %}
+                         <input type="text" class="mail_text" placeholder="Your Name" name="name" required>
+                         <input type="email" class="mail_text" placeholder="Email" name="email" required>
+                         <input type="text" class="mail_text" placeholder="Phone Number" name="phone_number" required>
+                         <input type="text" class="mail_text" placeholder="Address" name="address" required>
+                         <textarea class="massage-bt" placeholder="Message" rows="5" id="comment" name="message" required></textarea>                          
+                         <div class="contact_btn_main">
+                             <button type="submit">Send</button> <!-- This button should now get the styling -->
+                             <div class="map_bt">
+                                 <a href="#" id="showMap">Map</a>
+                             </div>
+                         </div>
+                     </form>
+                       <div class="map_main map_container">
+                           <div class="map-responsive">
+                            <iframe width="600" height="400" frameborder="0" style="border:0" src="https://www.openstreetmap.org/export/embed.html?bbox=-74.25909%2C40.4774%2C-73.700171%2C40.917577&amp;layer=mapnik" allowfullscreen></iframe>
+                               <div class="btn_main">
+                                   <div class="map_bt d-flex justify-content-center w-100 map_center">
+                                       <a href="#" id="showForm">Form</a>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+<!-- contact section end -->
+
+{% endblock %}
+
+
+       
+    
