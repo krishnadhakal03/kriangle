@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-y*sd(^dgn@1v99yq9(-(pkdx)k-p16^w7cv70pm#&jyx1l8&1z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['107.22.92.189','kriangle.com']
 
 
 # Application definition
@@ -144,3 +144,18 @@ EMAIL_HOST_PASSWORD = 'swjf ceoe adxv engz'       # Your Gmail App Password (do 
 
 # Optional: Define the default email for "from" field (can be used when sending emails programmatically)
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Ensure this is set to true in production
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True  # Make sure session cookies are secure as well
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://kriamgle.com',
+    '107.22.92.189',   
+]
+
+# If you're running locally and encountering this issue, set this to False temporarily
+CSRF_COOKIE_HTTPONLY = True  # Only make the CSRF cookie accessible via HTTP requests
+
+# Ensure CSRF token is included in requests
+CSRF_USE_SESSIONS = True
