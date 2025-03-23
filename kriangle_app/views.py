@@ -527,10 +527,13 @@ def get_related_keywords(keyword):
 
 def test_celery(request):
     from django.http import HttpResponse
+    
+    # Using the mock implementation in tasks.py
     from .tasks import test_task
     
-    result = test_task.delay("Hello World")
-    return HttpResponse(f"Task submitted with ID: {result.id}")
+    # Instead of using .delay(), directly call the function
+    result = test_task("Hello World")
+    return HttpResponse(f"Task executed synchronously. Result: {result}")
 
 def blog(request):
     try:

@@ -1,4 +1,6 @@
-from celery import shared_task
+# Mock Celery implementation for production deployments
+# Instead of: from celery import shared_task
+
 import openai
 import requests
 import time
@@ -14,6 +16,15 @@ from django.core.mail import send_mail
 from .models import SEOJob, SEOResult, BlogPost, OffPageSEOAction
 
 logger = logging.getLogger(__name__)
+
+# Mock implementation of shared_task decorator
+def shared_task(func=None, **kwargs):
+    """
+    Mock implementation of shared_task that runs the function synchronously
+    """
+    if func is None:
+        return lambda f: f
+    return func
 
 # Directory submission sites (free)
 DIRECTORY_SITES = [
@@ -406,6 +417,6 @@ def create_link_wheel(job, website_url, keywords_list, blog_post):
 
 @shared_task
 def test_task(param):
-    """Simple test task to verify Celery is working"""
-    logger.info(f"Test task executed with param: {param}")
-    return f"Task completed with param: {param}"
+    """Simple test task used for testing Celery functionality"""
+    logger.info(f"Test task executed with parameter: {param}")
+    return f"Test task completed with parameter: {param}"
