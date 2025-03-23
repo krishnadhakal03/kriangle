@@ -98,28 +98,31 @@ Kriangle provides expert website development and SEO services with a focus on bu
 <!-- select box section start -->
 <div class="container">
    <div class="select_box_section">
-       <form id="seo_form" method="post">
-           {% csrf_token %}
-           <div class="select_box_main">
-               <div class="row">
-                   <div class="col-md-6 select-outline">
-                       <input type="url" class="form-control" 
-                              placeholder="Enter Website URL" 
-                              name="website_url" required>
-                   </div>
-                   <div class="col-md-6 select-outline">
-                       <input type="text" class="form-control" 
-                              placeholder="Enter Keywords" 
-                              name="keywords">
+       <div class="col-md-8 offset-md-2">
+           <form id="seo_form" method="post">
+               {% csrf_token %}
+               <div class="form-group">
+                   <label for="website_url">Website URL</label>
+                   <div class="row">
+                       <div class="col-md-6 select-outline">
+                           <input type="url" class="form-control" 
+                                  placeholder="Enter Website URL" 
+                                  name="website_url" required>
+                       </div>
+                       <div class="col-md-6 select-outline">
+                           <input type="text" class="form-control" 
+                                  placeholder="Enter Keywords" 
+                                  name="keywords">
+                       </div>
                    </div>
                </div>
-           </div>
-           <div class="text-center mt-4">
-               <button type="submit" id="scan_now" class="btn btn-primary btn-lg">
-                   <i class="fas fa-search"></i> Scan Now
-               </button>
-           </div>
-       </form>
+               <div class="text-center mt-4">
+                   <button type="submit" id="scan_now" class="btn btn-primary btn-lg">
+                       <i class="fas fa-search"></i> Scan Now
+                   </button>
+               </div>
+           </form>
+       </div>
    </div>
 </div>   
 <!-- Analysis Report -->
