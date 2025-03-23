@@ -324,16 +324,27 @@ $(document).ready(function() {
         
         // Set a timeout to ensure UI is updated before heavy processing
         setTimeout(function() {
+            // Get CSRF token directly
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            console.log('CSRF Token:', csrftoken); // Debug output
+            
             // AJAX request
             $.ajax({
                 url: '/scan_seo/',
                 type: 'POST',
                 headers: {
-                    'X-CSRFToken': getCookie('csrftoken')
+                    'X-CSRFToken': csrftoken
                 },
                 data: {
                     'website_url': website_url,
                     'keywords': keywords
+                },
+                error: function(xhr, status, error) {
+                    // Add error handling
+                    resetAllUIElements();
+                    console.error('AJAX Error:', xhr.status, xhr.statusText);
+                    console.error('Response:', xhr.responseText);
+                    alert('Error: ' + xhr.status + ' ' + xhr.statusText + '\nPlease try again.');
                 },
                 success: function(response) {
                     // Always reset UI first
@@ -364,18 +375,6 @@ $(document).ready(function() {
                     } else {
                         alert('Error: Invalid response format');
                     }
-                },
-                error: function(xhr) {
-                    // Reset UI on error
-                    resetAllUIElements();
-                    
-                    let errorMsg = 'Request Failed: ';
-                    if (xhr.responseJSON && xhr.responseJSON.error) {
-                        errorMsg += xhr.responseJSON.error;
-                    } else {
-                        errorMsg += `${xhr.statusText} (${xhr.status})`;
-                    }
-                    alert(errorMsg);
                 },
                 complete: function() {
                     // Final check to ensure UI is reset with a delay
