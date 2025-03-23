@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Allow all web crawlers to access all content
+Disallow: /admin/
+Disallow: /media/private/
+Disallow: /static/admin/
+
+# Sitemap location
+Sitemap: https://kriangle.com/sitemap.xml 

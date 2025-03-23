@@ -3,7 +3,30 @@
 {% load static %}
 
 {% block title %} 
-About 
+About Our Website Development & SEO Services | Kriangle
+{% endblock %}
+
+{% block meta_description %}
+Learn about Kriangle's expert team of web developers and SEO specialists led by an experienced full-stack developer with over 13 years in software development, Python Django, and SEO optimization.
+{% endblock %}
+
+{% block additional_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "Kriangle",
+    "description": "Kriangle is led by an experienced full-stack developer with over 13 years in software development, specializing in website development and SEO services.",
+    "foundingDate": "2021",
+    "founder": {
+      "@type": "Person",
+      "name": "Krishna Dhakal"
+    }
+  }
+}
+</script>
 {% endblock %}
 
 {% block content %}
@@ -14,21 +37,21 @@ About
             <div class="row">
                <div class="col-md-6 padding_left0">
                   <div class="about_taital_main">
-                     <h1 class="about_taital">About Us</h1>
-                     <p>Welcome to Kriangle, where innovation meets expertise. At Kriangle, we are a forward-thinking, client-focused company led by an experienced full-stack developer with over 13 years of experience in software development, specializing in SEO, Python Django web development, and cloud-based solutions. While we are a small, agile team, we have the capability to scale and tailor our services based on each client’s unique needs, ensuring a highly personalized and effective approach.
+                     <h1 class="about_taital">Expert Website Development & SEO Services</h1>
+                     <p>Welcome to Kriangle, where innovation meets expertise. At Kriangle, we are a forward-thinking, client-focused company led by an experienced full-stack developer with over 13 years of experience in software development, specializing in SEO, Python Django web application development, and cloud-based solutions. While we are a small, agile team, we have the capability to scale and tailor our services based on each client's unique needs, ensuring a highly personalized and effective approach.
 
-                        Our Founder’s Expertise
+                        <h2 class="about_subtitle">Our Founder's Expertise</h2>
                         Our founder is a seasoned professional who has mastered various technologies over the years. With 13 years of experience working with Progress 4 GL (4th Generation Language), they bring a deep understanding of software development processes, enterprise solutions, and agile practices. Additionally, the founder has built and launched two fully functional web applications using Python Django, demonstrating proficiency in both front-end and back-end development.
                         
-                        Beyond development, the founder has also contributed to the growth and visibility of multiple businesses by implementing SEO strategies that have enhanced search engine rankings for five websites. Having experience in WordPress management for two websites, combined with hands-on involvement as a Scrum Master, ensures that every project is executed efficiently and delivered on time, following agile methodologies to keep things flexible and focused on the client’s needs.<p>
+                        Beyond development, the founder has also contributed to the growth and visibility of multiple businesses by implementing SEO strategies that have enhanced search engine rankings for five websites. Having experience in WordPress management for two websites, combined with hands-on involvement as a Scrum Master, ensures that every project is executed efficiently and delivered on time, following agile methodologies to keep things flexible and focused on the client's needs.<p>
                      <div class="btn_main">
-                        <div class="started_bt"><a href="#">Get Started</a></div>
-                        <div class="buy_bt active"><a href="#">Buy Now</a></div>
+                        <div class="started_bt"><a href="{% url 'contact' %}">Contact Us</a></div>
+                        <div class="buy_bt active"><a href="{% url 'services' %}">Our Services</a></div>
                      </div>
                   </div>
                </div>
                <div class="col-md-6">
-                  <div class="about_img"><img src="{% static 'images/about-img.png' %}"></div>
+                  <div class="about_img"><img src="{% static 'images/about-img.png' %}" alt="Kriangle Website Development & SEO Services"></div>
                </div>
             </div>
          </div>

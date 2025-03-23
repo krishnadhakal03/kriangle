@@ -1,0 +1,242 @@
+{% extends 'autoseo/base.html' %}
+{% load static %}
+
+{% block title %} 
+Task Details | Kriangle
+{% endblock %}
+
+{% block additional_schema %}
+<style>
+/* Direct fix for spacing issues */
+.header_section, .header_bg {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+.task-content {
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+.task-card {
+    border-left: 4px solid #4bc5b8;
+    margin-bottom: 20px;
+}
+
+.task-badge {
+    font-size: 12px;
+    padding: 3px 8px;
+    margin-left: 10px;
+}
+
+.content-panel {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+
+.content-panel pre {
+    white-space: pre-wrap;
+    font-family: 'Sen', sans-serif;
+    margin-bottom: 0;
+}
+
+.detail-row {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #555;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="task-content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Task Details</h3>
+                        <span class="badge badge-{% if task.status == 'completed' %}success{% elif task.status == 'failed' %}danger{% elif task.status == 'review' %}info{% else %}warning{% endif %} p-2">
+                            {{ task.status|title }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="task-overview mb-4">
+                            <h4>Task Overview</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-row">
+                                        <span class="detail-label">Task Type:</span>
+                                        <span class="detail-value">{{ task.get_task_type_display }}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">Website URL:</span>
+                                        <span class="detail-value">{{ task.website_url }}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">Keywords:</span>
+                                        <span class="detail-value">{{ task.keywords }}</span>
+                                    </div>
+                                    {% if task.topic %}
+                                    <div class="detail-row">
+                                        <span class="detail-label">Topic:</span>
+                                        <span class="detail-value">{{ task.topic }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    {% if task.platform %}
+                                    <div class="detail-row">
+                                        <span class="detail-label">Platform:</span>
+                                        <span class="detail-value">{{ task.platform }}</span>
+                                    </div>
+                                    {% endif %}
+                                    {% if task.category %}
+                                    <div class="detail-row">
+                                        <span class="detail-label">Category:</span>
+                                        <span class="detail-value">{{ task.category }}</span>
+                                    </div>
+                                    {% endif %}
+                                    {% if task.target_url %}
+                                    <div class="detail-row">
+                                        <span class="detail-label">Target URL:</span>
+                                        <span class="detail-value">{{ task.target_url }}</span>
+                                    </div>
+                                    {% endif %}
+                                    <div class="detail-row">
+                                        <span class="detail-label">Created:</span>
+                                        <span class="detail-value">{{ task.created_at|date:"M d, Y H:i" }}</span>
+                                    </div>
+                                    {% if task.completed_at %}
+                                    <div class="detail-row">
+                                        <span class="detail-label">Completed:</span>
+                                        <span class="detail-value">{{ task.completed_at|date:"M d, Y H:i" }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Generated Content -->
+                        {% if task.generated_content %}
+                        <div class="task-generated-content mb-4">
+                            <h4>Generated Content</h4>
+                            <div class="content-panel">
+                                <pre>{{ task.generated_content }}</pre>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Edited Content if available -->
+                        {% if task.edited_content %}
+                        <div class="task-edited-content mb-4">
+                            <h4>Edited Content</h4>
+                            <div class="content-panel">
+                                <pre>{{ task.edited_content }}</pre>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Submission Result if available -->
+                        {% if task.submission_result %}
+                        <div class="task-result mb-4">
+                            <h4>Submission Result</h4>
+                            <div class="alert alert-{% if task.status == 'completed' %}success{% elif task.status == 'failed' %}danger{% else %}info{% endif %}">
+                                {{ task.submission_result }}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="task-actions mt-4">
+                            <a href="{% url 'offpage_automation' %}" class="btn btn-primary">
+                                <i class="fas fa-arrow-left mr-1"></i> Back to Tasks
+                            </a>
+                            
+                            {% if task.status == 'review' %}
+                            <a href="#" class="btn btn-success ml-2" id="edit-content-btn">
+                                <i class="fas fa-pencil-alt mr-1"></i> Edit Content
+                            </a>
+                            <a href="#" class="btn btn-info ml-2" id="submit-task-btn">
+                                <i class="fas fa-paper-plane mr-1"></i> Submit Task
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_script %}
+<script>
+$(document).ready(function() {
+    // Add 'loaded' class to header section
+    $('.header_section').addClass('loaded');
+    
+    // Edit content button
+    $('#edit-content-btn').on('click', function(e) {
+        e.preventDefault();
+        
+        const currentContent = $('.task-generated-content pre').text();
+        
+        // Create a textarea for editing
+        $('.task-generated-content pre').html(`<textarea id="editable-content" class="form-control" rows="10">${currentContent}</textarea>`);
+        
+        // Change buttons
+        $(this).text('Save Changes').attr('id', 'save-content-btn');
+    });
+    
+    // Handle the dynamically created save button
+    $(document).on('click', '#save-content-btn', function(e) {
+        e.preventDefault();
+        
+        const editedContent = $('#editable-content').val();
+        
+        // Update the preview with edited content
+        $('.task-generated-content pre').html('').text(editedContent);
+        
+        // Reset button
+        $(this).text('Edit Content').attr('id', 'edit-content-btn');
+    });
+    
+    // Submit task button
+    $('#submit-task-btn').on('click', function(e) {
+        e.preventDefault();
+        
+        // Use Django's template variable in a JavaScript-safe way
+        const taskId = "{{ task.id }}";
+        const content = $('.task-generated-content pre').text();
+        
+        if (confirm('Are you sure you want to submit this task?')) {
+            // Submit the task
+            $.ajax({
+                url: "{% url 'submit_task' %}",
+                type: "POST",
+                data: JSON.stringify({
+                    task_id: taskId,
+                    content: content
+                }),
+                contentType: "application/json",
+                dataType: "json",
+                success: function(response) {
+                    alert(response.message);
+                    // Reload the page to show updated task status
+                    window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Error submitting task: " + error);
+                }
+            });
+        }
+    });
+});
+</script>
+{% endblock %} 

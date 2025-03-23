@@ -3,7 +3,64 @@
 {% load static %}
 
 {% block title %} 
-Services 
+Expert Website Development & SEO Services | Kriangle
+{% endblock %}
+
+{% block meta_description %}
+Kriangle offers comprehensive website development and SEO services including Python Django web applications, WordPress management, and strategic SEO optimization to boost your online presence.
+{% endblock %}
+
+{% block additional_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Service",
+          "name": "SEO Optimization",
+          "description": "Comprehensive SEO services including on-page and off-page optimization to improve search engine rankings.",
+          "provider": {
+            "@type": "Organization",
+            "name": "Kriangle"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Service",
+          "name": "Full-Stack Python Django Development",
+          "description": "Custom web application development using Python Django framework.",
+          "provider": {
+            "@type": "Organization",
+            "name": "Kriangle"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "Service",
+          "name": "WordPress Management",
+          "description": "Expert WordPress management, customization and optimization.",
+          "provider": {
+            "@type": "Organization",
+            "name": "Kriangle"
+          }
+        }
+      }
+    ]
+  }
+}
+</script>
 {% endblock %}
 
 {% block content %}
@@ -12,10 +69,16 @@ Services
 <div class="services_section layout_padding">
    <div class="container">
       <div class="row">
+         <div class="col-md-12 mb-4 text-center">
+            <h1 class="main_heading">Professional Web Development & SEO Services</h1>
+            <p class="sub_heading">Comprehensive digital solutions designed to help your business grow online</p>
+         </div>
+      </div>
+      <div class="row">
          <div class="col-md-4">
-            <h4 class="services_taital">SEO Optimization</h4>
+            <h2 class="services_taital">SEO Optimization</h2>
             <p class="services_text">
-               At Kriangle, we know that a well-optimized website is key to success in the digital world. Our SEO services are not just about improving rankings; they’re about building a strong, sustainable online presence. With hands-on experience optimizing five websites, we focus on:
+               At Kriangle, we know that a well-optimized website is key to success in the digital world. Our SEO services are not just about improving rankings; they're about building a strong, sustainable online presence. With hands-on experience optimizing five websites, we focus on:
                <ul>
                   <li>On-page and Off-page SEO strategies</li>
                   <li>Keyword research and competitive analysis</li>
@@ -23,7 +86,7 @@ Services
                   <li>Content strategy and backlink building</li>
                   <li>SEO audits and ongoing reporting</li>
                </ul>
-               By analyzing your website’s structure and content, we’ll ensure it is search-engine-friendly and performs at its best.
+               By analyzing your website's structure and content, we'll ensure it is search-engine-friendly and performs at its best.
             </p>            
          </div>
          <div class="col-md-4">
@@ -51,7 +114,7 @@ Services
                   <li>Cloud database management with Azure SQL Database or AWS RDS for high availability and performance</li>
                   <li>Cloud security practices, including encryption, firewalls, and access management</li>
                </ul>
-               Whether you’re hosting a simple website or a complex application, we’ll help you leverage the power of cloud computing to achieve optimal performance and scalability.
+               Whether you're hosting a simple website or a complex application, we'll help you leverage the power of cloud computing to achieve optimal performance and scalability.
             </p>
             
          </div>
@@ -81,7 +144,7 @@ Services
                   <li>Secure API connections with proper authentication methods (OAuth, API Keys)</li>
                   <li>Integration with US health insurance systems, ensuring compliance and security</li>
                </ul>
-               Whether you’re integrating payment solutions, customer management systems, or healthcare services, we can help build the connections that power your business.
+               Whether you're integrating payment solutions, customer management systems, or healthcare services, we can help build the connections that power your business.
             </p>
             
          </div>
@@ -94,7 +157,7 @@ Services
                   <li>Regular standups, retrospectives, and reviews for continuous improvement</li>
                   <li>Focus on collaboration with stakeholders and team members</li>
                </ul>
-               Whether you’re launching a new project or need a well-defined path to complete an existing one, we can help guide your team to success using agile methodologies.
+               Whether you're launching a new project or need a well-defined path to complete an existing one, we can help guide your team to success using agile methodologies.
             </p>
             
          </div>

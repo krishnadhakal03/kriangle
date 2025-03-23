@@ -1,0 +1,180 @@
+{% extends 'autoseo/base.html' %}
+
+{% load static %}
+
+{% block title %} 
+Web Development & SEO Blog | Expert Tips and Insights | Kriangle
+{% endblock %}
+
+{% block meta_description %}
+Read our expert insights on website development, web applications, and SEO strategies. Learn how to improve your online presence with Kriangle's professional tips and guides.
+{% endblock %}
+
+{% block additional_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Kriangle Web Development & SEO Blog",
+  "description": "Expert insights and tips on website development, SEO, and web applications.",
+  "url": "https://kriangle.com/blog/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Kriangle",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kriangle.com/static/images/logo.png"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- blog section start -->
+<div class="blog_section layout_padding">
+   <div class="container">
+      <div class="row mb-5">
+         <div class="col-md-12 text-center">
+            <h1 class="main_heading">Web Development & SEO Blog</h1>
+            <p class="sub_heading">Expert insights to help your business grow online</p>
+         </div>
+      </div>
+      
+      <div class="row">
+         <!-- Main Blog Content -->
+         <div class="col-lg-8">
+            <div class="row">
+               {% if blog_posts %}
+                  {% for post in blog_posts %}
+                     <div class="col-md-6 mb-5">
+                        <div class="blog_post card shadow-sm h-100">
+                           {% if post.featured_image %}
+                              <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
+                           {% else %}
+                              <img src="{% static 'images/SEO Services.png' %}" class="card-img-top" alt="{{ post.title }}">
+                           {% endif %}
+                           <div class="card-body">
+                              <h2 class="card-title h4">{{ post.title }}</h2>
+                              <p class="meta">
+                                 Posted on: {{ post.published_at|date:"F d, Y" }} | 
+                                 <span class="category">
+                                    <a href="{% url 'blog_category' post.category.slug %}">{{ post.category.name }}</a>
+                                 </span>
+                              </p>
+                              <p class="card-text">{{ post.summary }}</p>
+                              
+                              <a href="{% url 'blog_post_detail' post.slug %}" class="btn btn-primary mt-3">Read More</a>
+                           </div>
+                        </div>
+                     </div>
+                  {% endfor %}
+               {% else %}
+                  <div class="col-12">
+                     <div class="alert alert-info">
+                        No blog posts found. Please check back soon for updates!
+                     </div>
+                  </div>
+               {% endif %}
+            </div>
+         </div>
+         
+         <!-- Sidebar -->
+         <div class="col-lg-4">
+            <!-- Categories Widget -->
+            <div class="card shadow-sm mb-4">
+               <div class="card-header bg-primary text-white">
+                  <h4 class="mb-0">Categories</h4>
+               </div>
+               <div class="card-body">
+                  <ul class="list-unstyled">
+                     {% for category in categories %}
+                        <li class="mb-2">
+                           <a href="{% url 'blog_category' category.slug %}">
+                              {{ category.name }}
+                           </a>
+                        </li>
+                     {% empty %}
+                        <li>No categories found.</li>
+                     {% endfor %}
+                  </ul>
+               </div>
+            </div>
+            
+            <!-- Recent Posts Widget -->
+            <div class="card shadow-sm mb-4">
+               <div class="card-header bg-primary text-white">
+                  <h4 class="mb-0">Recent Posts</h4>
+               </div>
+               <div class="card-body">
+                  <ul class="list-unstyled">
+                     {% for post in recent_posts %}
+                        <li class="mb-3">
+                           <a href="{% url 'blog_post_detail' post.slug %}">
+                              {{ post.title }}
+                           </a>
+                           <div class="small text-muted">{{ post.published_at|date:"F d, Y" }}</div>
+                        </li>
+                     {% empty %}
+                        <li>No recent posts found.</li>
+                     {% endfor %}
+                  </ul>
+               </div>
+            </div>
+            
+            <!-- Tags Widget -->
+            <div class="card shadow-sm mb-4">
+               <div class="card-header bg-primary text-white">
+                  <h4 class="mb-0">Tags</h4>
+               </div>
+               <div class="card-body">
+                  <div class="tag-cloud">
+                     {% for tag in tags %}
+                        <a href="{% url 'blog_tag' tag.slug %}" class="badge badge-primary bg-light text-dark m-1 p-2">
+                           {{ tag.name }}
+                        </a>
+                     {% empty %}
+                        <p>No tags found.</p>
+                     {% endfor %}
+                  </div>
+               </div>
+            </div>
+            
+            <!-- CTA Card -->
+            <div class="cta_card card bg-primary text-white shadow-sm">
+               <div class="card-body text-center d-flex flex-column justify-content-center">
+                  <h2 class="card-title h4 mb-4">Need Help With Your Website or SEO?</h2>
+                  <p class="card-text mb-4">Our team of experts specializes in custom web application development and comprehensive SEO services to help your business grow online.</p>
+                  <div class="mt-auto">
+                     <a href="{% url 'contact' %}" class="btn btn-light btn-lg">Contact Us</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- blog section end -->
+
+<!-- Add some custom CSS for the blog page -->
+<style>
+   .blog_post {
+      transition: transform 0.3s ease;
+   }
+   .blog_post:hover {
+      transform: translateY(-5px);
+   }
+   .category a {
+      color: #4e73df;
+      text-decoration: none;
+   }
+   .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+   }
+   .meta {
+      font-size: 0.9rem;
+      color: #6c757d;
+   }
+</style>
+{% endblock %} 

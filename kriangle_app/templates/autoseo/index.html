@@ -3,32 +3,82 @@
 {% load static %}
 
 {% block title %} 
-Home 
+Professional Website Development & SEO Services | Kriangle 
+{% endblock %}
+
+{% block meta_description %}
+Kriangle provides expert website development and SEO services with a focus on building custom web applications that drive business growth. Get a free consultation today!
+{% endblock %}
+
+{% block additional_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://kriangle.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://kriangle.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Website Development",
+  "provider": {
+    "@type": "Organization",
+    "name": "Kriangle"
+  },
+  "areaServed": "Worldwide",
+  "description": "Custom website development services using Python Django, focusing on performance and SEO optimization."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "SEO Services",
+  "provider": {
+    "@type": "Organization",
+    "name": "Kriangle"
+  },
+  "areaServed": "Worldwide",
+  "description": "Comprehensive SEO services including on-page and off-page optimization to improve search engine rankings."
+}
+</script>
 {% endblock %}
 
 {% block content %}
+
+{% comment %}Set authentication status for JavaScript{% endcomment %}
+<script>
+    var isUserAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+</script>
 
   <!-- banner section start --> 
   <div class="banner_section layout_padding">
    <div class="container">
       <div class="row">
          <div class="col-md-6">
-            <h1 class="banner_taital">Scan website for SEO & <span style="color: #2b2b2b;">Security</span></h1>
-            <p class="banner_text">Try our free AI scanner and analysis report later you can choose plan for SEO package, website building and IT support. </p>
-            <div class="started_text"><a href="{% url 'services' %}">Read More</a></div>
-            <div class="play_icon"><a href="{% url 'services' %}"><img src="{% static 'images/play-icon.png' %}"></a> </div>
+            <h1 class="banner_taital">Professional Website Development & <span style="color: #2b2b2b;">SEO Services</span></h1>
+            <p class="banner_text">We build custom web applications and provide expert SEO services to help your business grow online. Get a comprehensive analysis and tailored solutions for your digital needs.</p>
+            <div class="started_text"><a href="{% url 'services' %}">Our Services</a></div>
+            <div class="play_icon"><a href="{% url 'services' %}"><img src="{% static 'images/play-icon.png' %}" alt="Website Development Services"></a> </div>
          </div>
          <div class="col-md-6">
             <div id="banner_slider" class="carousel slide" data-ride="carousel">
                <div class="carousel-inner">
                   <div class="carousel-item active">
-                     <div class="banner_img"><img src="{% static 'images/SEO Services.png' %}"></div>
+                     <div class="banner_img"><img src="{% static 'images/SEO Services.png' %}" alt="SEO Services"></div>
                   </div>
                   <div class="carousel-item">
-                     <div class="banner_img"><img src="{% static 'images/Python Application.png' %}"></div>
+                     <div class="banner_img"><img src="{% static 'images/Python Application.png' %} " alt="Python Application"></div>
                   </div>
                   <div class="carousel-item">
-                     <div class="banner_img"><img src="{% static 'images/Website Development.png' %}"></div>
+                     <div class="banner_img"><img src="{% static 'images/Website Development.png' %}" alt="Website Design"></div>
                   </div>
                </div>
                <a class="carousel-control-prev" href="#banner_slider" role="button" data-slide="prev">
@@ -77,8 +127,36 @@ Home
 <div id="analysis_report" class="mt-5" style="display: none;">
    <h3 class="mb-4"><i class="fas fa-file-alt"></i> SEO Analysis Report</h3>
    
+   <!-- Premium Feature Banner -->
+   <div id="premium_banner" class="report-card bg-gradient-primary text-white">
+       <div class="row">
+           <div class="col-md-8">
+               <h4><i class="fas fa-crown"></i> Unlock Premium SEO Analysis</h4>
+               <p>Get detailed insights, competitor analysis, downloadable reports, and much more!</p>
+               <ul>
+                   <li><i class="fas fa-check-circle"></i> Full competitor analysis</li>
+                   <li><i class="fas fa-check-circle"></i> Comprehensive technical error reports</li>
+                   <li><i class="fas fa-check-circle"></i> Downloadable PDF reports</li>
+                   <li><i class="fas fa-check-circle"></i> Weekly rank tracking</li>
+                   <li><i class="fas fa-check-circle"></i> Custom SEO recommendations</li>
+               </ul>
+           </div>
+           <div class="col-md-4 text-center d-flex align-items-center justify-content-center">
+               <button id="upgrade_button" class="btn btn-light btn-lg"><i class="fas fa-unlock"></i> Upgrade Now</button>
+           </div>
+       </div>
+   </div>
+   
    <!-- Report content will be populated here -->
-   <div id="report_content"></div>
+   <div id="report_content" class="copy-protected"></div>
+   
+   <!-- Monetization footer -->
+   <div class="report-card mt-4 text-center">
+       <h5>Want to download this report?</h5>
+       <p>Create an account to save and download your SEO reports</p>
+       <button id="save_report_button" class="btn btn-success"><i class="fas fa-save"></i> Save Report</button>
+       <button id="download_pdf_button" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Download as PDF</button>
+   </div>
 </div>
 </div>
 
@@ -90,182 +168,524 @@ Home
    padding: 20px;
    margin-bottom: 20px;
    background: #fff;
+   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 .report-card h5 {
    color: #2c3e50;
    border-bottom: 2px solid #eee;
    padding-bottom: 10px;
+   margin-bottom: 15px;
 }
 .metric-item {
    margin: 10px 0;
+   line-height: 1.6;
 }
-
+#analysis_report {
+   padding: 20px;
+   margin-top: 40px;
+   margin-bottom: 40px;
+   background: #f9f9f9;
+   border-radius: 10px;
+}
+/* Fix for button layout */
+.btn-primary {
+   position: relative;
+   z-index: 10;
+}
+/* Ensure navbar stays on top */
+.navbar {
+   position: relative;
+   z-index: 1000;
+}
+/* Premium feature styling */
+.bg-gradient-primary {
+   background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+   color: white;
+}
+.premium-feature {
+   cursor: pointer;
+   background-color: #f8f9fa;
+   padding: 10px;
+   border-radius: 5px;
+   position: relative;
+}
+.premium-feature:after {
+   content: "🔒 Premium";
+   position: absolute;
+   top: 5px;
+   right: 5px;
+   font-size: 12px;
+   background: #f8d7da;
+   padding: 2px 5px;
+   border-radius: 3px;
+   color: #721c24;
+}
+.premium-metric {
+   color: #6c757d;
+   font-style: italic;
+}
+.premium-metric:after {
+   content: " 🔒";
+   font-style: normal;
+}
+/* Copy protection */
+.copy-protected {
+   user-select: none;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+}
+.social-links-large {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+.social-links-large .social-icon {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background: #28454e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+}
+.social-links-large .social-icon:hover {
+    background: #4bc5b8;
+    transform: translateY(-5px);
+}
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-   $(document).ready(function() {
-       // CSRF Token function
-       function getCookie(name) {
-           let cookieValue = null;
-           if (document.cookie && document.cookie !== '') {
-               const cookies = document.cookie.split(';');
-               for (let i = 0; i < cookies.length; i++) {
-                   const cookie = cookies[i].trim();
-                   if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                       cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                       break;
-                   }
-               }
-           }
-           return cookieValue;
-       }
-   
-       // Form submission handler
-       $('#seo_form').submit(function(event) {
-           event.preventDefault();
-           const $btn = $('#scan_now');
-           
-           // Get input values
-           const website_url = $('input[name="website_url"]').val();
-           const keywords = $('input[name="keywords"]').val();
-   
-           // Validate URL
-           if (!website_url) {
-               alert('Please enter a website URL!');
-               return;
-           }
-   
-           $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Scanning...');
-   
-           // AJAX request
-           $.ajax({
-               url: '/scan_seo/',
-               type: 'POST',
-               headers: {
-                   'X-CSRFToken': getCookie('csrftoken')
-               },
-               data: {
-                   'website_url': website_url,
-                   'keywords': keywords
-               },
-               success: function(response) {
-                   if (response.error) {
-                       alert('Error: ' + response.error);
-                       return;
-                   }
-                   
-                   // Ensure response has report data
-                   if (response.report) {
-                       const report = response.report;
-                       let reportHtml = `
-                           <div class="report-card">
-                               <h5><i class="fas fa-info-circle"></i> Basic Information</h5>
-                               <div class="metric-item">
-                                   <strong>Title Tag:</strong> ${report.title_tag || 'Not Found'}
-                               </div>
-                               <div class="metric-item">
-                                   <strong>Scanned URL:</strong> ${website_url}
-                               </div>
+<script type="text/javascript">
+$(document).ready(function() {
+    // Check authentication status (set from server-side)
+    var isUserAuthenticated = document.body.getAttribute('data-authenticated') === 'true';
+
+    // CSRF Token function
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Function to reset all UI elements
+    function resetAllUIElements() {
+        // Re-enable all form elements
+        $('input, select, textarea, button').prop('disabled', false);
+        
+        // Re-enable all links
+        $('a').prop('disabled', false);
+        
+        // Reset scan button specifically
+        $('#scan_now').html('<i class="fas fa-search"></i> Scan Now').prop('disabled', false);
+        
+        console.log('All UI elements have been reset');
+    }
+    
+    // Form submission handler with optimized performance
+    $('#seo_form').submit(function(event) {
+        event.preventDefault();
+        
+        // Get input values
+        const website_url = $('input[name="website_url"]').val();
+        const keywords = $('input[name="keywords"]').val();
+
+        // Basic validation
+        if (!website_url) {
+            alert('Please enter a website URL');
+            return false;
+        }
+        
+        // Store original button text and disable button
+        const $scanButton = $('#scan_now');
+        const originalButtonHtml = $scanButton.html();
+        
+        // Show immediate UI feedback
+        $scanButton.prop('disabled', true);
+        $scanButton.html('<i class="fas fa-spinner fa-spin"></i> Scanning...');
+        
+        // Disable input fields during scan
+        $('input[name="website_url"], input[name="keywords"]').prop('disabled', true);
+        
+        // Set a timeout to ensure UI is updated before heavy processing
+        setTimeout(function() {
+            // AJAX request
+            $.ajax({
+                url: '/scan_seo/',
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                data: {
+                    'website_url': website_url,
+                    'keywords': keywords
+                },
+                success: function(response) {
+                    // Always reset UI first
+                    resetAllUIElements();
+                    
+                    if (response.error) {
+                        alert('Error: ' + response.error);
+                        return;
+                    }
+                    
+                    // Ensure response has report data
+                    if (response.report) {
+                        try {
+                            // Store the report data for potential future use
+                            lastReport = response.report;
+                            
+                            // Display the report
+                            displayReport(response.report, website_url);
+                            
+                            // Scroll to report
+                            $('html, body').animate({
+                                scrollTop: $('#analysis_report').offset().top - 50
+                            }, 500);
+                        } catch (err) {
+                            console.error('Error displaying report:', err);
+                            alert('Error processing report data. Please try again.');
+                        }
+                    } else {
+                        alert('Error: Invalid response format');
+                    }
+                },
+                error: function(xhr) {
+                    // Reset UI on error
+                    resetAllUIElements();
+                    
+                    let errorMsg = 'Request Failed: ';
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMsg += xhr.responseJSON.error;
+                    } else {
+                        errorMsg += `${xhr.statusText} (${xhr.status})`;
+                    }
+                    alert(errorMsg);
+                },
+                complete: function() {
+                    // Final check to ensure UI is reset with a delay
+                    setTimeout(resetAllUIElements, 1000);
+                },
+                timeout: 30000 // 30 seconds timeout
+            });
+        }, 100); // Small timeout for UI update
+    });
+    
+    // Add loaded class to header section
+    $('.header_section').addClass('loaded');
+    
+    // Also add it after AJAX requests complete
+    $(document).ajaxComplete(function() {
+        $('.header_section').addClass('loaded');
+    });
+});
+
+// Variable to store the last report
+let lastReport = null;
+
+// Helper function to interpret readability score
+function getReadabilityLevel(score) {
+    if (!score) return 'Not calculated';
+    
+    if (score >= 90) return 'Very Easy to Read';
+    if (score >= 80) return 'Easy to Read';
+    if (score >= 70) return 'Fairly Easy to Read';
+    if (score >= 60) return 'Standard';
+    if (score >= 50) return 'Fairly Difficult';
+    if (score >= 30) return 'Difficult';
+    return 'Very Confusing';
+}
+
+// Helper functions for report display
+function displayReport(report, websiteUrl) {
+    // Check if this is a premium report
+    const isPremium = report.monetization?.is_premium || false;
+    
+    // Show/hide premium banner based on authentication status
+    if (isUserAuthenticated) {
+        $('#premium_banner').hide();
+    } else {
+        $('#premium_banner').show();
+    }
+    
+    // Store the report for PDF generation later
+    lastReport = report;
+    
+    // Build report HTML
+    let reportHtml = '';
+    
+    // Basic Information card
+    reportHtml += buildBasicInfoCard(report, websiteUrl);
+    
+    // Keyword Analysis card
+    reportHtml += buildKeywordAnalysisCard(report);
+    
+    // Content Analysis card
+    reportHtml += buildContentAnalysisCard(report);
+    
+    // SEO Suggestions card
+    reportHtml += buildSuggestionCard(report);
+    
+    // Technical SEO card
+    reportHtml += buildTechnicalSEOCard(report, isPremium);
+    
+    // Competitor Analysis card
+    reportHtml += buildCompetitorCard(report, isPremium);
+    
+    // Additional Metrics card
+    reportHtml += buildMetricsCard(report);
+    
+    // Update the report content
+    $('#report_content').html(reportHtml);
+    $('#analysis_report').fadeIn();
+}
+
+function buildBasicInfoCard(report, websiteUrl) {
+    return `
+        <div class="report-card">
+            <h5><i class="fas fa-info-circle"></i> Basic Information</h5>
+            <div class="metric-item">
+                <strong>Title Tag:</strong> ${report.title_tag || 'Not Found'}
+            </div>
+            <div class="metric-item">
+                <strong>Scanned URL:</strong> ${websiteUrl}
+            </div>
+            <div class="metric-item">
+                <strong>Meta Description:</strong> ${report.meta_description || 'Not Found'}
+            </div>
+        </div>
+    `;
+}
+
+function buildTechnicalSEOCard(report, isPremium) {
+    let html = `
+        <div class="report-card">
+            <h5><i class="fas fa-chart-bar"></i> Technical SEO</h5>
+            <div class="metric-item">
+                <strong>Page Load Time:</strong> ${report.technical_seo?.page_load_time || 'Not analyzed'}
+            </div>
+            <div class="metric-item">
+                <strong>Mobile Friendly:</strong> ${report.technical_seo?.mobile_friendly ? '✅' : '❌'}
+            </div>
+            <div class="metric-item">
+                <strong>HTTPS Enabled:</strong> ${report.technical_seo?.https_enabled ? '✅' : '❌'}
+            </div>
+            <div class="metric-item">
+                <strong>Schema Markup:</strong> ${report.technical_seo?.schema_markup ? '✅' : '❌'}
+                ${report.technical_seo?.schema_markup ? 
+                `<br><em>${report.technical_seo?.schema_markup_details}</em>` : ''}
+            </div>
+    `;
+    
+    // Indexed Pages (premium or not)
+    html += `<div class="metric-item ${isPremium ? '' : 'premium-metric'}">
+        <strong>Indexed Pages:</strong> ${report.technical_seo?.indexed_pages}
+        ${isPremium ? '' : '<span class="badge bg-warning text-dark ms-2">Premium</span>'}
+    </div>`;
+    
+    // HTML Errors
+    html += `<div class="metric-item">
+        <strong>HTML Errors:</strong> 
+        ${Array.isArray(report.technical_seo?.html_errors) ? 
+            report.technical_seo.html_errors.length > 0 ? 
+                '<ul>' + report.technical_seo.html_errors.map(e => `<li>${e}</li>`).join('') + '</ul>' 
+                : 'No major errors detected' 
+            : report.technical_seo?.html_errors || 'Not checked'}
+    </div>`;
+    
+    // JavaScript Errors (premium or not)
+    html += `<div class="metric-item ${isPremium ? '' : 'premium-metric'}">
+        <strong>JavaScript Errors:</strong> `;
+        
+    if (isPremium) {
+        if (Array.isArray(report.technical_seo?.js_errors)) {
+            html += report.technical_seo.js_errors.map(e => `<div>${e}</div>`).join('');
+        } else {
+            html += report.technical_seo?.js_errors || 'Not checked';
+        }
+    } else {
+        html += report.technical_seo?.js_errors + '<span class="badge bg-warning text-dark ms-2">Premium</span>';
+    }
+    
+    html += `</div></div>`;
+    
+    return html;
+}
+
+function buildCompetitorCard(report, isPremium) {
+    let html = `<div class="${isPremium ? '' : 'premium-feature'} report-card">
+        <h5><i class="fas fa-users"></i> Competitor Analysis</h5>`;
+    
+    if (isPremium) {
+        html += `<div class="competitor-details">`;
+        
+        if (Array.isArray(report.competitor_analysis?.detailed_comparison)) {
+            report.competitor_analysis.detailed_comparison.forEach(comp => {
+                html += `
+                    <div class="competitor-card mt-3">
+                        <h6>${comp.name}</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Strengths:</strong></p>
+                                <ul>
+                                    ${comp.strengths.map(s => `<li>${s}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Weaknesses:</strong></p>
+                                <ul>
+                                    ${comp.weaknesses.map(w => `<li>${w}</li>`).join('')}
+                                </ul>
                            </div>
-   
-                           <div class="report-card">
-                               <h5><i class="fas fa-key"></i> Keyword Analysis</h5>
-                               <div class="metric-item">
-                                   <strong>Keyword Count:</strong> ${report.keyword_count || 0}
-                               </div>
-                               <div class="metric-item">
-                                   <strong>Density:</strong> ${report.keyword_analysis?.keyword_density || 0}%
-                               </div>
-                           </div>
-   
-                           <div class="report-card">
-                               <h5><i class="fas fa-search"></i> SEO Suggestions</h5>
-                               ${report.on_page_seo_suggestions?.length ? 
-                                   '<ul>' + report.on_page_seo_suggestions.map(s => 
-                                       `<li><i class="fas fa-exclamation-triangle text-warning me-2"></i>${s}</li>`
-                                   ).join('') + '</ul>' : 
-                                   '<div class="text-success">No major issues found!</div>'}
-                           </div>
-   
-                           <div class="report-card">
-                               <h5><i class="fas fa-chart-bar"></i> Technical Metrics</h5>
-                               <div class="metric-item">
-                                   <strong>Images:</strong> ${report.other_seo_metrics?.num_images || 0}
-                               </div>
-                               <div class="metric-item">
-                                   <strong>Links:</strong> ${report.other_seo_metrics?.num_links || 0}
-                               </div>
-                               <div class="metric-item">
-                                   <strong>Scripts:</strong> ${report.other_seo_metrics?.num_scripts || 0}
-                               </div>
-                               <div class="metric-item">
-                                   <strong>h1 tag:</strong> ${report.other_seo_metrics?.num_h1 || 0}
-                               </div>
-                               <div class="metric-item">
-                                   <strong>h2 tag:</strong> ${report.other_seo_metrics?.num_h2 || 0}
-                               </div>
-                               <div class="metric-item">
-                                   <strong>h3 tag:</strong> ${report.other_seo_metrics?.num_h3 || 0}
-                               </div>
-                               <div class="metric-item">
-                                   <strong>Canonical tag:</strong> ${report.other_seo_metrics?.canonical_tag || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>Page speed:</strong> ${report.other_seo_metrics?.page_speed || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>Internal Links:</strong> ${report.other_seo_metrics?.internal_links || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>External Links:</strong> ${report.other_seo_metrics?.external_links || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>Structured Data:</strong> ${report.other_seo_metrics?.structured_data || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>Mobile Friendly:</strong> ${report.other_seo_metrics?.mobile_friendly || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>Social Media Tags:</strong> ${report.other_seo_metrics?.social_media_tags || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>noindex tag:</strong> ${report.other_seo_metrics?.noindex_tag || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>XML sitemap:</strong> ${report.other_seo_metrics?.xml_sitemap || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>Robots.txt:</strong> ${report.other_seo_metrics?.robots_txt || 0}
-                               </div>
-                                <div class="metric-item">
-                                   <strong>Text to html ratio:</strong> ${report.other_seo_metrics?.text_to_html_ratio || 0}
-                               </div>
-                           </div>
-                       `;
-   
-                       $('#report_content').html(reportHtml);
-                       $('#analysis_report').show();
-                   } else {
-                       alert('Invalid server response format');
-                   }
-               },
-               error: function(xhr) {
-                   let errorMsg = 'Request Failed: ';
-                   if (xhr.responseJSON && xhr.responseJSON.error) {
-                       errorMsg += xhr.responseJSON.error;
-                   } else {
-                       errorMsg += `${xhr.statusText} (${xhr.status})`;
-                   }
-                   alert(errorMsg);
-               },
-               complete: function() {
-                   $btn.prop('disabled', flase).html('<i class="fas fa-search"></i> Scan Now');
-               }
-           });
-       });
-   });
-   </script>
+                       </div>
+                        <p><strong>Opportunity Keywords:</strong> ${comp.opportunity_keywords.join(', ')}</p>
+                    </div>
+                `;
+            });
+        } else {
+            html += `<p>${report.competitor_analysis?.detailed_comparison}</p>`;
+        }
+        
+        html += `</div>`;
+    } else {
+        html += `
+            <p>Upgrade to Premium to see how your website compares to these competitors:</p>
+            <ul>
+                ${report.competitor_analysis?.competitors?.map(c => `<li>${c}</li>`).join('') || '<li>No competitors identified</li>'}
+            </ul>
+            <div class="text-center mt-3">
+                <button class="btn btn-sm btn-primary mt-2">View Full Competitor Analysis</button>
+            </div>
+        `;
+    }
+    
+    html += `</div>`;
+    return html;
+}
+
+function buildKeywordAnalysisCard(report) {
+    return `
+        <div class="report-card">
+            <h5><i class="fas fa-key"></i> Keyword Analysis</h5>
+            <div class="metric-item">
+                <strong>Keyword Count:</strong> ${report.keyword_count || 0}
+            </div>
+            <div class="metric-item">
+                <strong>Density:</strong> ${report.keyword_analysis?.keyword_density || 0}%
+            </div>
+            <div class="metric-item">
+                <strong>Top Extracted Keywords:</strong> 
+                <ul class="mt-2">
+                    ${report.keyword_analysis?.extracted_keywords?.slice(0, 5).map(kw => 
+                        `<li>${kw[0]}: ${kw[1]} occurrences</li>`).join('') || 'None found'}
+                </ul>
+            </div>
+            <div class="metric-item">
+                <strong>Keyword Placement:</strong>
+                <ul class="mt-2">
+                    <li>In Title: ${report.keyword_analysis?.keyword_placement?.in_title ? '✅' : '❌'}</li>
+                    <li>In Meta Description: ${report.keyword_analysis?.keyword_placement?.in_meta_description ? '✅' : '❌'}</li>
+                    <li>In H1: ${report.keyword_analysis?.keyword_placement?.in_h1 ? '✅' : '❌'}</li>
+                    <li>In First Paragraph: ${report.keyword_analysis?.keyword_placement?.in_first_paragraph ? '✅' : '❌'}</li>
+                </ul>
+            </div>
+        </div>
+    `;
+}
+
+function buildContentAnalysisCard(report) {
+    return `
+        <div class="report-card">
+            <h5><i class="fas fa-file-alt"></i> Content Analysis</h5>
+            <div class="metric-item">
+                <strong>Content Quality:</strong> ${report.content_analysis?.content_quality || 'Not analyzed'}
+            </div>
+            <div class="metric-item">
+                <strong>Word Count:</strong> ${report.content_analysis?.word_count || 0}
+            </div>
+            <div class="metric-item">
+                <strong>Readability Score:</strong> ${report.content_analysis?.readability_score || 0} 
+                (${getReadabilityLevel(report.content_analysis?.readability_score)})
+            </div>
+            <div class="metric-item">
+                <strong>Paragraph Count:</strong> ${report.content_analysis?.paragraph_count || 0}
+            </div>
+            <div class="metric-item">
+                <strong>Average Paragraph Length:</strong> ${report.content_analysis?.average_paragraph_length || 0} words
+            </div>
+        </div>
+    `;
+}
+
+function buildSuggestionCard(report) {
+    return `
+        <div class="report-card">
+            <h5><i class="fas fa-search"></i> SEO Suggestions</h5>
+            ${report.on_page_seo_suggestions?.length ? 
+                '<ul>' + report.on_page_seo_suggestions.map(s => 
+                    `<li><i class="fas fa-exclamation-triangle text-warning me-2"></i>${s}</li>`
+                ).join('') + '</ul>' : 
+                '<div class="text-success">No major issues found!</div>'}
+        </div>
+    `;
+}
+
+function buildMetricsCard(report) {
+    return `
+        <div class="report-card">
+            <h5><i class="fas fa-chart-bar"></i> Additional Metrics</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="metric-item">
+                        <strong>Images:</strong> ${report.other_seo_metrics?.num_images || 0}
+                    </div>
+                    <div class="metric-item">
+                        <strong>Links:</strong> ${report.other_seo_metrics?.num_links || 0}
+                    </div>
+                    <div class="metric-item">
+                        <strong>h1 tag:</strong> ${report.other_seo_metrics?.num_h1 || 0}
+                    </div>
+                    <div class="metric-item">
+                        <strong>h2 tag:</strong> ${report.other_seo_metrics?.num_h2 || 0}
+                    </div>
+                    <div class="metric-item">
+                        <strong>h3 tag:</strong> ${report.other_seo_metrics?.num_h3 || 0}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="metric-item">
+                        <strong>Internal Links:</strong> ${report.other_seo_metrics?.internal_links || 0}
+                    </div>
+                    <div class="metric-item">
+                        <strong>External Links:</strong> ${report.other_seo_metrics?.external_links || 0}
+                    </div>
+                    <div class="metric-item">
+                        <strong>Social Media Tags:</strong> ${report.other_seo_metrics?.social_media_tags ? '✅' : '❌'}
+                    </div>
+                    <div class="metric-item">
+                        <strong>XML sitemap:</strong> ${report.other_seo_metrics?.xml_sitemap ? '✅' : '❌'}
+                    </div>
+                    <div class="metric-item">
+                        <strong>Robots.txt:</strong> ${report.other_seo_metrics?.robots_txt ? '✅' : '❌'}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+</script>
 
 <!-- services section start -->
 <div class="services_section layout_padding">
@@ -279,7 +699,7 @@ Home
          <div class="col-md-4">
             <h4 class="services_taital">SEO Optimization</h4>
             <p class="services_text">
-               At Kriangle, we know that a well-optimized website is key to success in the digital world. Our SEO services are not just about improving rankings; they’re about building a strong, sustainable online presence. With hands-on experience optimizing five websites, we focus on:
+               At Kriangle, we know that a well-optimized website is key to success in the digital world. Our SEO services are not just about improving rankings; they're about building a strong, sustainable online presence. With hands-on experience optimizing five websites, we focus on:
                <ul>
                   <li>On-page and Off-page SEO strategies</li>
                   <li>Keyword research and competitive analysis</li>
@@ -287,7 +707,7 @@ Home
                   <li>Content strategy and backlink building</li>
                   <li>SEO audits and ongoing reporting</li>
                </ul>
-               By analyzing your website’s structure and content, we’ll ensure it is search-engine-friendly and performs at its best.
+               By analyzing your website's structure and content, we'll ensure it is search-engine-friendly and performs at its best.
             </p>            
          </div>
          <div class="col-md-4">
@@ -315,7 +735,7 @@ Home
                   <li>Cloud database management with Azure SQL Database or AWS RDS for high availability and performance</li>
                   <li>Cloud security practices, including encryption, firewalls, and access management</li>
                </ul>
-               Whether you’re hosting a simple website or a complex application, we’ll help you leverage the power of cloud computing to achieve optimal performance and scalability.
+               Whether you're hosting a simple website or a complex application, we'll help you leverage the power of cloud computing to achieve optimal performance and scalability.
             </p>
             
          </div>
@@ -345,7 +765,7 @@ Home
                   <li>Secure API connections with proper authentication methods (OAuth, API Keys)</li>
                   <li>Integration with US health insurance systems, ensuring compliance and security</li>
                </ul>
-               Whether you’re integrating payment solutions, customer management systems, or healthcare services, we can help build the connections that power your business.
+               Whether you're integrating payment solutions, customer management systems, or healthcare services, we can help build the connections that power your business.
             </p>
             
          </div>
@@ -358,7 +778,7 @@ Home
                   <li>Regular standups, retrospectives, and reviews for continuous improvement</li>
                   <li>Focus on collaboration with stakeholders and team members</li>
                </ul>
-               Whether you’re launching a new project or need a well-defined path to complete an existing one, we can help guide your team to success using agile methodologies.
+               Whether you're launching a new project or need a well-defined path to complete an existing one, we can help guide your team to success using agile methodologies.
             </p>
             
          </div>
@@ -444,11 +864,11 @@ Home
                         <div class="customer_main">
                            <p class="enim_text">Next Generation Wealth Pro </p>
                            <div class="customer_left">
-                              <div class="customer_img"><img src="{% static 'images/customer-img.png' %}"></div>
+                              <div class="customer_img"><img src="{% static 'images/customer1-img.jpeg' %}" alt="Small Business"></div>
                            </div>
                            <div class="customer_right">
-                              <h3 class="customer_name">Doba Dhakal</h3>
-                              <p class="web_text">Satisfied </p>
+                              <h3 class="customer_name"> Doba Dhakal</h3>
+                              <p class="web_text"> I'm extremely satisfied with the services provided by Kriangle. The team developed a robust and user-friendly Next Generation Wealth Pro dynamic CMS website for my business. The platform is seamless, easy to manage, and optimized for SEO. Kriangle's attention to detail and dedication to delivering a top-quality product exceeded my expectations. I highly recommend their services for anyone looking to elevate their online presence. </p>
                            </div>
                         </div>
                      </div>
@@ -464,13 +884,13 @@ Home
                   <div class="col-md-12">
                      <div class="box_main">
                         <div class="customer_main">
-                           <p class="enim_text">kasthamandap Restaurant and Bar </p>
+                           <p class="enim_text">Kasthamandap Restaurant and Bar </p>
                            <div class="customer_left">
-                              <div class="customer_img"><img src="{% static 'images/customer-img.png' %}"></div>
+                              <div class="customer_img"><img src="{% static 'images/customer2-img.png' %}" alt="CMS Site"></div>
                            </div>
                            <div class="customer_right">
-                              <h3 class="customer_name">Renji Sherpa</h3>
-                              <p class="web_text">Happy that I gave to Kriangle </p>
+                              <h3 class="customer_name"> Renji Sherpa</h3>
+                              <p class="web_text"> We are thoroughly impressed with Kriangle's services. They provided expert SEO support and efficiently managed our WordPress site, ensuring it runs smoothly and ranks higher on search engines. Their team was attentive, responsive, and highly professional, and we've seen significant improvements in both site performance and online visibility. We highly recommend Kriangle for anyone looking to enhance their web presence. </p>
                            </div>
                         </div>
                      </div>
@@ -486,13 +906,13 @@ Home
                   <div class="col-md-12">
                      <div class="box_main">
                         <div class="customer_main">
-                           <p class="enim_text">has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors </p>
+                           <p class="enim_text">Pretty Eyebrows Threading</p>
                            <div class="customer_left">
-                              <div class="customer_img"><img src="{% static 'images/customer-img.png' %}"></div>
+                              <div class="customer_img"><img src="{% static 'images/customer3-img.png' %}"></div>
                            </div>
                            <div class="customer_right">
-                              <h3 class="customer_name">Content</h3>
-                              <p class="web_text">And web page </p>
+                              <h3 class="customer_name"> Bhushan Pyakurel</h3>
+                              <p class="web_text"> Thanks to Kriangle's excellent SEO services, our website is now ranking at the top of Google for 5 key keywords! Their team worked tirelessly to optimize our site and deliver results that matter. We're beyond pleased with the increased visibility and traffic. If you're looking for reliable SEO that brings real results, we highly recommend Kriangle. </p>
                            </div>
                         </div>
                      </div>

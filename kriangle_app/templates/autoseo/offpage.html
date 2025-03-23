@@ -1,20 +1,637 @@
 {% extends 'autoseo/base.html' %}
-{% block title %}Off Page SEO{% endblock %}
+{% load static %}
+
+{% block title %} 
+Off Page SEO | Kriangle
+{% endblock %}
+
+{% block additional_schema %}
+<style>
+/* Direct fix for spacing issues on offpage template */
+.header_section, .header_bg {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+.offpage-content {
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+/* Process flow styling */
+.process-flow-container {
+    margin: 30px 0;
+}
+
+.process-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.process-step {
+    flex: 0 0 20%;
+    text-align: center;
+    padding: 10px;
+    transition: all 0.3s;
+}
+
+.process-step:hover {
+    transform: translateY(-5px);
+}
+
+.process-icon {
+    background-color: #4bc5b8;
+    color: white;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.process-step h5 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.process-arrow {
+    flex: 0 0 5%;
+    color: #4bc5b8;
+    font-size: 24px;
+    text-align: center;
+}
+
+/* Task cards styling */
+.task-card {
+    border-left: 4px solid #4bc5b8;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.task-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.task-icon {
+    font-size: 24px;
+    color: #4bc5b8;
+}
+
+/* Content preview styling */
+.content-preview {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+
+.content-preview pre {
+    white-space: pre-wrap;
+    font-family: 'Sen', sans-serif;
+    margin-bottom: 0;
+}
+
+/* Form tabs styling */
+.tab-content {
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+
+.nav-tabs .nav-link.active {
+    border-color: #dee2e6 #dee2e6 #fff;
+    background-color: #fff;
+    color: #4bc5b8;
+    font-weight: bold;
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+}
+
+/* Loading indicator */
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.task-history-item {
+    border-left: 3px solid #4bc5b8;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+.task-badge {
+    font-size: 12px;
+    padding: 3px 8px;
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Off Page SEO Automation</h1>
-    <form method="POST" action="">
-        {% csrf_token %}
-        <div class="form-group">
-            <label>Website URL:</label>
-            <input type="url" class="form-control" name="website" required>
+<div class="offpage-content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Off-Page SEO Automation</h3>
+                    </div>
+                    <div class="card-body">
+                    
+                    <!-- Process flow diagram -->
+                    <div class="process-flow-container mb-4">
+                        <h4>How Our Off-Page SEO Works</h4>
+                        <div class="process-row">
+                            <div class="process-step">
+                                <div class="process-icon">
+                                    <i class="fas fa-globe fa-2x"></i>
+                                </div>
+                                <h5>1. Input</h5>
+                                <p>Enter your website URL and target keywords</p>
+                            </div>
+                            
+                            <div class="process-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="process-icon">
+                                    <i class="fas fa-search fa-2x"></i>
+                                </div>
+                                <h5>2. Analysis</h5>
+                                <p>System analyzes competitive landscape and opportunities</p>
+                            </div>
+                            
+                            <div class="process-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="process-icon">
+                                    <i class="fas fa-cogs fa-2x"></i>
+                                </div>
+                                <h5>3. Simulation</h5>
+                                <p>Simulates off-page SEO tasks and strategies</p>
+                            </div>
+                            
+                            <div class="process-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="process-icon">
+                                    <i class="fas fa-clipboard-list fa-2x"></i>
+                                </div>
+                                <h5>4. Results</h5>
+                                <p>Provides actionable recommendations and reports</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-explanation mt-4">
+                            <div class="alert alert-info">
+                                <h5><i class="fas fa-info-circle"></i> About This Tool</h5>
+                                <p>This Off-Page SEO tool automates strategies to improve your site's external visibility. The system will:</p>
+                                <ul>
+                                    <li><strong>Analyze your competitors</strong> for the specified keywords</li>
+                                    <li><strong>Identify backlink opportunities</strong> from relevant websites</li>
+                                    <li><strong>Suggest social media strategies</strong> to enhance your online presence</li>
+                                    <li><strong>Automate outreach efforts</strong> to increase your site visibility</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if user.is_authenticated %}
+                    <!-- SEO Task Creation Tabs -->
+                    <div class="seo-task-container mt-4">
+                        <h4>Create Off-Page SEO Tasks</h4>
+                        <p class="text-muted">Select a task type and enter your details to generate optimized content</p>
+                        
+                        <ul class="nav nav-tabs" id="seoTaskTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="guest-post-tab" data-toggle="tab" href="#guest-post" role="tab">
+                                    <i class="fas fa-blog mr-1"></i> Guest Post Outreach
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="social-media-tab" data-toggle="tab" href="#social-media" role="tab">
+                                    <i class="fas fa-share-alt mr-1"></i> Social Media Post
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="directory-tab" data-toggle="tab" href="#directory" role="tab">
+                                    <i class="fas fa-folder-open mr-1"></i> Directory Submission
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="forum-tab" data-toggle="tab" href="#forum" role="tab">
+                                    <i class="fas fa-comments mr-1"></i> Forum Engagement
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="seoTaskTabContent">
+                            <!-- Guest Post Outreach Form -->
+                            <div class="tab-pane fade show active" id="guest-post" role="tabpanel">
+                                <form id="guest-post-form" class="seo-task-form">
+                                    <input type="hidden" name="task_type" value="guest_post">
+                                    
+                                    <div class="form-group">
+                                        <label for="gp-website-url">Your Website URL</label>
+                                        <input type="url" class="form-control" id="gp-website-url" name="website_url" 
+                                               placeholder="https://example.com" required>
+                                        <small class="form-text text-muted">Enter the URL you want to create a backlink to</small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="gp-keywords">Target Keywords</label>
+                                        <input type="text" class="form-control" id="gp-keywords" name="keywords" 
+                                               placeholder="SEO, digital marketing, web development" required>
+                                        <small class="form-text text-muted">Enter keywords separated by commas</small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="gp-blog-url">Target Blog URL (Optional)</label>
+                                        <input type="url" class="form-control" id="gp-blog-url" name="blog_url" 
+                                               placeholder="https://targetblog.com">
+                                        <small class="form-text text-muted">Enter a specific blog you'd like to reach out to</small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="gp-topic">Proposed Post Topic</label>
+                                        <input type="text" class="form-control" id="gp-topic" name="topic" 
+                                               placeholder="10 Ways to Improve Your Website's SEO" required>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary generate-content-btn">
+                                        <i class="fas fa-magic mr-1"></i> Generate Outreach Email
+                                    </button>
+                                </form>
+                            </div>
+                            
+                            <!-- Social Media Post Form -->
+                            <div class="tab-pane fade" id="social-media" role="tabpanel">
+                                <form id="social-media-form" class="seo-task-form">
+                                    <input type="hidden" name="task_type" value="social_media">
+                                    
+                                    <div class="form-group">
+                                        <label for="sm-website-url">Website URL to Promote</label>
+                                        <input type="url" class="form-control" id="sm-website-url" name="website_url" 
+                                               placeholder="https://example.com/blog-post" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="sm-keywords">Target Keywords</label>
+                                        <input type="text" class="form-control" id="sm-keywords" name="keywords" 
+                                               placeholder="SEO, social media marketing" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="sm-platform">Social Media Platform</label>
+                                        <select class="form-control" id="sm-platform" name="platform">
+                                            <option value="twitter">Twitter</option>
+                                            <option value="linkedin">LinkedIn</option>
+                                            <option value="facebook">Facebook</option>
+                                            <option value="instagram">Instagram</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary generate-content-btn">
+                                        <i class="fas fa-magic mr-1"></i> Generate Social Post
+                                    </button>
+                                </form>
+                            </div>
+                            
+                            <!-- Directory Submission Form -->
+                            <div class="tab-pane fade" id="directory" role="tabpanel">
+                                <form id="directory-form" class="seo-task-form">
+                                    <input type="hidden" name="task_type" value="directory">
+                                    
+                                    <div class="form-group">
+                                        <label for="dir-website-url">Website URL to Submit</label>
+                                        <input type="url" class="form-control" id="dir-website-url" name="website_url" 
+                                               placeholder="https://example.com" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="dir-keywords">Target Keywords</label>
+                                        <input type="text" class="form-control" id="dir-keywords" name="keywords" 
+                                               placeholder="SEO, web development" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="dir-description">Website Description</label>
+                                        <textarea class="form-control" id="dir-description" name="description" 
+                                                  rows="3" placeholder="Brief description of your website"></textarea>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="dir-category">Business Category</label>
+                                        <select class="form-control" id="dir-category" name="category">
+                                            <option value="technology">Technology</option>
+                                            <option value="marketing">Marketing</option>
+                                            <option value="business">Business</option>
+                                            <option value="health">Health</option>
+                                            <option value="education">Education</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary generate-content-btn">
+                                        <i class="fas fa-magic mr-1"></i> Generate Directory Listing
+                                    </button>
+                                </form>
+                            </div>
+                            
+                            <!-- Forum Engagement Form -->
+                            <div class="tab-pane fade" id="forum" role="tabpanel">
+                                <form id="forum-form" class="seo-task-form">
+                                    <input type="hidden" name="task_type" value="forum">
+                                    
+                                    <div class="form-group">
+                                        <label for="forum-website-url">Website URL to Promote</label>
+                                        <input type="url" class="form-control" id="forum-website-url" name="website_url" 
+                                               placeholder="https://example.com" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="forum-keywords">Target Keywords</label>
+                                        <input type="text" class="form-control" id="forum-keywords" name="keywords" 
+                                               placeholder="SEO, web development" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="forum-topic">Forum Topic/Question</label>
+                                        <input type="text" class="form-control" id="forum-topic" name="topic" 
+                                               placeholder="How to improve website performance?" required>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary generate-content-btn">
+                                        <i class="fas fa-magic mr-1"></i> Generate Forum Response
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Content Preview Section -->
+                        <div id="content-preview-section" class="content-preview mt-4" style="display: none;">
+                            <h5><i class="fas fa-eye mr-1"></i> Generated Content Preview</h5>
+                            <div class="alert alert-warning">
+                                <i class="fas fa-info-circle mr-1"></i> Review the generated content below before submitting
+                            </div>
+                            
+                            <div id="preview-content-container">
+                                <pre id="preview-content"></pre>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <button id="edit-content-btn" class="btn btn-outline-secondary">
+                                    <i class="fas fa-pencil-alt mr-1"></i> Edit Content
+                                </button>
+                                <button id="submit-content-btn" class="btn btn-success ml-2">
+                                    <i class="fas fa-paper-plane mr-1"></i> Submit
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Loading Spinner -->
+                        <div id="loading-spinner" class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p class="mt-2">Generating optimized content...</p>
+                        </div>
+                        
+                        <!-- Task History -->
+                        <div class="task-history mt-5">
+                            <h4>Your Recent SEO Tasks</h4>
+                            <div id="task-history-container">
+                                {% if previous_jobs %}
+                                    {% for job in previous_jobs %}
+                                    <div class="task-history-item p-3 bg-light rounded">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-1">{{ job.url }}</h5>
+                                            <span class="badge badge-{% if job.status == 'completed' %}success{% elif job.status == 'failed' %}danger{% else %}warning{% endif %} task-badge">
+                                                {{ job.status|title }}
+                                            </span>
+                                        </div>
+                                        <p class="text-muted mb-2">Keywords: {{ job.keywords }}</p>
+                                        <p class="text-muted mb-0">Created: {{ job.created_at|date:"M d, Y" }}</p>
+                                        <a href="{% url 'seo_results' job_id=job.id %}" class="btn btn-sm btn-outline-primary mt-2">
+                                            View Results
+                                        </a>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="alert alert-info">
+                                        No SEO tasks found. Create your first task above!
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <h4 class="alert-heading">Premium Feature</h4>
+                            <p>Off-page SEO automation is a premium feature available only to registered users.</p>
+                            <hr>
+                            <a href="{% url 'login' %}" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt mr-1"></i> Login
+                            </a>
+                            <p class="mt-3 mb-0">Need access? <a href="{% url 'contact' %}">Contact Support</a></p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="how-works-section mt-5 mb-5 py-4">
+                        <h2 class="text-center mb-4">How Our Off-Page SEO Works</h2>
+                        
+                        <div class="process-flow-container">
+                            <div class="process-step">
+                                <div class="step-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h4>Analysis</h4>
+                                    <p>We analyze your website and competitive landscape to identify the best off-page SEO opportunities.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="step-icon">
+                                    <i class="fas fa-bullseye"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h4>Strategy</h4>
+                                    <p>We develop a customized strategy focusing on the most effective link building and brand mention tactics.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="step-icon">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h4>Implementation</h4>
+                                    <p>Our team executes the strategy through guest posting, social signals, and authoritative backlinks.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="step-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h4>Results</h4>
+                                    <p>You receive improved search rankings, increased referral traffic, and enhanced brand authority.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-5">
+                            <a href="{% url 'offpage_automation' %}" class="btn btn-primary btn-lg">
+                                <i class="fas fa-rocket mr-2"></i> Try Our Off-Page SEO Automation
+                            </a>
+                            <p class="mt-2 text-muted">Create customized outreach emails, social media posts, and more with our automation tools</p>
+                        </div>
+                    </div>
+                    
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Keywords:</label>
-            <input type="text" class="form-control" name="keywords" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Start SEO Automation</button>
-    </form>
+    </div>
 </div>
+{% endblock %}
+
+{% block additional_script %}
+<script>
+$(document).ready(function() {
+    // Add 'loaded' class to header section
+    $('.header_section').addClass('loaded');
+    
+    // Also add it after AJAX requests complete
+    $(document).ajaxComplete(function() {
+        $('.header_section').addClass('loaded');
+    });
+    
+    // Content generation form handling
+    $('.seo-task-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading spinner
+        $('#loading-spinner').show();
+        $('#content-preview-section').hide();
+        
+        // Get form data
+        const form = $(this);
+        const formData = {};
+        
+        // Collect all form fields
+        form.serializeArray().forEach(item => {
+            formData[item.name] = item.value;
+        });
+
+        // Send AJAX request to Django backend
+        $.ajax({
+            url: "{% url 'generate_content' %}",
+            type: "POST",
+            data: JSON.stringify(formData),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(response) {
+                // Display the generated content
+                $('#preview-content').text(response.content);
+                $('#content-preview-section').show();
+                $('#loading-spinner').hide();
+                
+                // Store the task ID and content for submission
+                $('#content-preview-section').data('task-id', response.task_id);
+                $('#content-preview-section').data('content', response.content);
+            },
+            error: function(xhr, status, error) {
+                alert("Error generating content: " + error);
+                $('#loading-spinner').hide();
+            }
+        });
+    });
+    
+    // Edit content button
+    $('#edit-content-btn').on('click', function() {
+        const currentContent = $('#preview-content').text();
+        
+        // Create a textarea for editing
+        $('#preview-content').html(`<textarea id="editable-content" class="form-control" rows="10">${currentContent}</textarea>`);
+        
+        // Change buttons
+        $(this).text('Save Changes').attr('id', 'save-content-btn');
+    });
+    
+    // Handle the dynamically created save button
+    $(document).on('click', '#save-content-btn', function() {
+        const editedContent = $('#editable-content').val();
+        
+        // Update the preview with edited content
+        $('#preview-content').html('').text(editedContent);
+        
+        // Update stored content
+        $('#content-preview-section').data('content', editedContent);
+        
+        // Reset button
+        $(this).text('Edit Content').attr('id', 'edit-content-btn');
+    });
+    
+    // Submit content button
+    $('#submit-content-btn').on('click', function() {
+        const taskId = $('#content-preview-section').data('task-id');
+        const content = $('#preview-content').text();
+        
+        // Show loading
+        $('#loading-spinner').show();
+        $('#content-preview-section').hide();
+        
+        // Submit the task
+        $.ajax({
+            url: `/offpage/tasks/${taskId}/submit/`,
+            type: "POST",
+            data: JSON.stringify({
+                task_id: taskId,
+                content: content
+            }),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(response) {
+                // Show success message
+                alert(response.message);
+                
+                // Reload the page to show updated task history
+                window.location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert("Error submitting task: " + error);
+                $('#loading-spinner').hide();
+                $('#content-preview-section').show();
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

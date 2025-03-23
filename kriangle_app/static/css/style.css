@@ -34,6 +34,29 @@ body {
     overflow-x: hidden;
 }
 
+/* Fix for extra space above menu bar when logged in */
+body[data-authenticated="true"] .header_section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Fix for extra space above menu bar after AJAX load */
+.header_section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    transition: none !important;
+}
+
+/* Fix for header background spacing */
+.header_bg {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+.header_section.loaded {
+    padding-top: 0;
+}
+
 a {
     color: #1f1f1f;
     text-decoration: none !important;
@@ -219,10 +242,8 @@ button {
 .header_section {
     width: 100%;
     float: left;
-    background-image: url(../images/banner-bg.png);
-    height: auto;
-    background-size: 100%;
-    background-repeat: no-repeat;
+    position: relative;
+    z-index: 999;
 }
 
 .header_section::after {
@@ -238,16 +259,11 @@ button {
 }
 
 .header_bg {
-    background-color: #ffffff !important;
+    background-color: #28454e !important;
 }
 
 .header_bg::after {
     display: none;
-}
-
-.header_bg {
-    background: #fb6818;
-    border-bottom: 1px solid #ffffff;
 }
 
 .bg-light {
@@ -291,7 +307,8 @@ button {
 }
 
 .navbar {
-    padding: 15px 15px;
+    background-color: #28454e !important;
+    padding: 10px 0;
 }
 
 .user_icon {
@@ -1184,7 +1201,9 @@ textarea#comment::placeholder {
 }
 
 .contact_btn_main {
-    width: 51%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
     margin: 0 auto;
     text-align: center;
 }
@@ -1221,17 +1240,16 @@ textarea#comment::placeholder {
 
 .map_bt {
     width: 160px;
-    float: left;
     margin-left: 15px;
 }
 
 .map_bt a {
-    width: auto;
+    width: 100%;
     text-align: center;
     font-size: 18px;
     color: #28454e;
     background-color: #e0fdf9;
-    padding: 10px 60px;
+    padding: 10px 30px;
     text-transform: uppercase;
     margin-top: 30px;
     display: block;
@@ -1266,7 +1284,7 @@ textarea#comment::placeholder {
     float: left;
     background-color: #28454e;
     height: auto;
-    padding-bottom: 65px;
+    padding: 50px 0 20px 0;
 }
 
 .footer_logo {
@@ -1275,6 +1293,13 @@ textarea#comment::placeholder {
     justify-content: center;
     align-items: center;
     margin: 0 auto;
+}
+
+.footer_logo img {
+    filter: brightness(0) invert(1);
+    width: 300px;
+    max-width: 80%;
+    background-color: #28454e;
 }
 
 .input_main {
@@ -1412,20 +1437,48 @@ input.email_text::placeholder {
 
 .social_icon li a {
     float: left;
-    padding: 5px 15px;
+    padding: 10px 15px;
     background-color: #ffffff;
     color: #28454e;
-    border-radius: 100%;
+    border-radius: 50%;
     font-size: 18px;
-    margin-right: 5px;
-    width: 43px;
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     margin-top: 10px;
+    transition: all 0.3s ease;
 }
 
 .social_icon li a:hover {
-    background-color: #e0fdf9;
-    color: #252525;
+    background-color: #4bc5b8;
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+.invert-logo {
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+    background-color: #28454e;
+}
+
+/* Fix for dropdown item button to look like link */
+.dropdown-item.btn, button.dropdown-item {
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 0.25rem 1.5rem;
+    width: 100%;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.dropdown-item.btn:hover, button.dropdown-item:hover {
+    background-color: #4bc5b8;
+    color: #ffffff;
 }
 
 
@@ -1471,27 +1524,262 @@ input.email_text::placeholder {
 
 /* More specific CSS selector for the Send button */
 .contact_btn_main button[type="submit"] {
-    width: auto;
+    width: 160px;
     text-align: center;
     font-size: 18px;
     color: #28454e;
     background-color: #e0fdf9;
-    padding: 10px 60px;
+    padding: 10px 30px;
     text-transform: uppercase;
     margin-top: 30px;
     display: block;
     font-weight: bold;
     border-radius: 5px;
     font-family: 'poppins', sans-serif;
+    border: none;
 }
 
 /* Hover effect */
 .contact_btn_main button[type="submit"]:hover {
     color: #fff;
     background-color: #00c6aa;
+    cursor: pointer;
 }
 
 .contact_btn_main {
-    width: 160px;
-    float: left;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Make dropdown menu match theme */
+.dropdown-menu {
+    background-color: #28454e;
+    border: 1px solid #4bc5b8;
+}
+
+.dropdown-item {
+    color: #ffffff;
+}
+
+.dropdown-item:hover {
+    background-color: #4bc5b8;
+    color: #ffffff;
+}
+
+.footer_section {
+    padding: 50px 0 20px 0;
+}
+
+.footer_menu ul li {
+    margin-bottom: 8px;
+}
+
+.footer_section_2 {
+    padding-top: 30px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+
+.navbar-light .navbar-nav .active > .nav-link {
+    color: #4bc5b8 !important;
+}
+
+.btn-outline-primary {
+    color: #ffffff;
+    border-color: #4bc5b8;
+}
+
+.btn-outline-primary:hover {
+    background-color: #4bc5b8;
+    color: #ffffff;
+}
+
+/* Text Logo Styling */
+.text-logo {
+    display: inline-block;
+    text-align: center;
+}
+
+.logo-text {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Sen', sans-serif;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.logo-text::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4bc5b8;
+    transition: width 0.3s ease;
+}
+
+.navbar-brand:hover .logo-text::after,
+.footer_logo:hover .logo-text::after {
+    width: 100%;
+}
+
+.logo-text:hover {
+    text-shadow: 0 0 10px rgba(75, 197, 184, 0.3);
+}
+
+.footer_logo .text-logo {
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+}
+
+.footer_logo .logo-text {
+    font-size: 40px;
+}
+
+@media (max-width: 768px) {
+    .logo-text {
+        font-size: 28px;
+    }
+    
+    .footer_logo .logo-text {
+        font-size: 32px;
+    }
+}
+
+.logo-text .highlight {
+    color: #4bc5b8;
+}
+
+.logo-text:hover {
+    text-shadow: 0 0 10px rgba(75, 197, 184, 0.3);
+}
+
+/* Standardized button styles */
+.btn-primary, 
+.started_bt a, 
+.buy_bt a, 
+.readmore_bt a, 
+.send_bt a, 
+.chat_bt a, 
+.call_bt a, 
+.search_btn a,
+#scan_now,
+.user-auth .btn-outline-primary {
+    background-color: #4bc5b8 !important;
+    color: #ffffff !important;
+    border-color: #4bc5b8 !important;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.btn-primary:hover, 
+.started_bt a:hover, 
+.buy_bt a:hover, 
+.readmore_bt a:hover, 
+.send_bt a:hover, 
+.chat_bt a:hover, 
+.call_bt a:hover, 
+.search_btn a:hover,
+#scan_now:hover,
+.user-auth .btn-outline-primary:hover {
+    background-color: #38a89c !important;
+    color: #ffffff !important;
+    border-color: #38a89c !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Style for login button */
+.dropdown-item:hover, button.dropdown-item:hover {
+    background-color: #4bc5b8;
+    color: #ffffff;
+}
+
+/* Card styling to match theme */
+.card-header {
+    background-color: #28454e !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #4bc5b8;
+}
+
+.card-header h1, 
+.card-header h2, 
+.card-header h3, 
+.card-header h4, 
+.card-header h5, 
+.card-header h6 {
+    color: #ffffff !important;
+    margin-bottom: 0;
+}
+
+.card {
+    border: 1px solid rgba(75, 197, 184, 0.2);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* Fix icon alignment and visibility */
+.btn i, .nav-link i, .dropdown-item i {
+    display: inline-block;
+    width: 18px;
+    text-align: center;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.btn-outline-primary i {
+    color: #4bc5b8;
+}
+
+.btn-outline-primary:hover i {
+    color: #ffffff;
+}
+
+/* Add spacing between navbar and content */
+.content-container {
+    margin-top: 30px;
+}
+
+/* Add specific spacing for the offpage SEO section */
+.offpage-container {
+    margin-top: 80px;
+    padding-top: 40px;
+}
+
+/* Main content spacing */
+#content {
+    margin-top: 0;
+}
+
+/* For all content blocks */
+.content_block {
+    margin-top: 80px;
+    padding-top: 30px;
+}
+
+/* Fix layout for all pages */
+.content-container {
+    padding-top: 20px;
+}
+
+/* Add specific spacing for the offpage SEO page */
+.offpage-content {
+    margin-top: 20px;
+    padding-top: 30px;
+}
+
+/* Specific fix for offpage content */
+.offpage-content {
+    margin-top: 20px;
 }

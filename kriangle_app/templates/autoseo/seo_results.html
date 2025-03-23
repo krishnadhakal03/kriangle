@@ -1,13 +1,115 @@
 {% extends 'autoseo/base.html' %}
-{% block title %}SEO Results{% endblock %}
+{% block title %}SEO Results | Kriangle{% endblock %}
+
+{% load static %}
 
 {% block content %}
-<div class="container">
-    <h1>SEO Automation Results</h1>
-    <ul>
-        {% for result in results %}
-            <li>{{ result.step }}: <a href="{{ result.result_data }}" target="_blank">{{ result.result_data }}</a></li>
-        {% endfor %}
-    </ul>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-success text-white">
+                    <h1 class="text-center mb-0">Off-Page SEO Results</h1>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <div class="mb-4 p-3 bg-light rounded">
+                        <h2 class="h4">Job Details:</h2>
+                        <div><strong>URL:</strong> {{ job.url }}</div>
+                        <div><strong>Keywords:</strong> {{ job.keywords }}</div>
+                        <div><strong>Status:</strong> <span class="badge badge-{{ job.status|lower }}">{{ job.status }}</span></div>
+                        <div><strong>Created:</strong> {{ job.created_at }}</div>
+                        <div><strong>Job ID:</strong> {{ job.id }}</div>
+                    </div>
+                    
+                    <h2 class="h3 mb-3">Actions Taken</h2>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-striped">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>Step</th>
+                                    <th>Result</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in results %}
+                                <tr>
+                                    <td><strong>{{ result.step }}</strong></td>
+                                    <td>{{ result.result_data }}</td>
+                                    <td>
+                                        {% if result.status == 'success' %}
+                                            <span class="badge badge-success">Success</span>
+                                        {% elif result.status == 'failed' %}
+                                            <span class="badge badge-danger">Failed</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">{{ result.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center">No results found. <a href="{% url 'offpageseo' %}">Try again</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h2 class="h3 mb-3">Platforms Submitted</h2>
+                    <div class="row">
+                        {% for action in job.offpage_actions.all %}
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ action.platform }}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ action.action_type }}</h6>
+                                        {% if action.url %}
+                                            <a href="{{ action.url }}" target="_blank" class="card-link">View Submission</a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted">{{ action.created_at|date:"F d, Y" }}</small>
+                                        {% if action.status == 'success' %}
+                                            <span class="badge badge-success float-right">Success</span>
+                                        {% elif action.status == 'failed' %}
+                                            <span class="badge badge-danger float-right">Failed</span>
+                                        {% else %}
+                                            <span class="badge badge-warning float-right">{{ action.status }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-12">
+                                <div class="alert alert-info">No platform submissions found.</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="{% url 'offpageseo' %}" class="btn btn-outline-primary">
+                                <i class="fa fa-arrow-left mr-2"></i> Back to Off-Page SEO
+                            </a>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a href="{% url 'blog' %}" class="btn btn-outline-success">
+                                <i class="fa fa-book mr-2"></i> View Blog Posts
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
