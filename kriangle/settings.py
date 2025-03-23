@@ -128,6 +128,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Login URL configuration
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
